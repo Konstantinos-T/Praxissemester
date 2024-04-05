@@ -1,0 +1,53 @@
+\begin{thebibliography}{7}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[lit(2008)]{lit:param}
+R\"{a}uber-beute-modell, 2008.
+\newblock URL \url{https://systemdesign.ch/wiki/R%C3%A4uber-Beute-Modell}.
+\newblock Letzter Zugriff: 15.02.2021.
+
+\bibitem[{Dr. rer. nat. Frank Morherr}(2018)]{lit:law}
+{Dr. rer. nat. Frank Morherr}.
+\newblock {Modellierung von Wachstumsprozessen und Populationsdynamik
+  [Vorlesungsskript]}.
+\newblock Technische Universit\"{a}t Dresden, 2018.
+\newblock URL
+  \url{https://tu-dresden.de/mn/math/analysis/das-institut/memberbereiche/frank_martin.morherr/ressourcen/dateien/vortraege-und-workshops/ModellierungvonWachstumsprozessen.pdf?lang=de}.
+\newblock Letzter Zugriff: 15.02.2021.
+
+\bibitem[F\"{o}llinger and Franke(1982)]{lit:Foellinger1982}
+Otto F\"{o}llinger and Dieter Franke.
+\newblock \emph{Einf\"{u}hrung in die Zustandsbeschreibung dynamischer Systeme
+  - mit einer Anleitung zur Matritzenrechnung}.
+\newblock Oldenbourg, Deutschland, 1982.
+\newblock ISBN 978-3-486-26551-4.
+
+\bibitem[Helmreich(2011)]{lit:Helmreich2011}
+Magdalena Helmreich.
+\newblock \emph{Das R\"{a}uber-Beute-System nach Lotka-Volterra in der
+  \"{O}kologie und Analogien in Spieldynamik und Populationsgenetik}.
+\newblock Wien, Techn. Univ., Dipl.-Arb., 2011.
+\newblock URL \url{https://permalink.catalogplus.tuwien.at/AC07811672}.
+
+\bibitem[Koch and St\"{a}mpfle(2015)]{lit:Koch2015}
+J\"{u}rgen Koch and Martin St\"{a}mpfle.
+\newblock \emph{{Mathematik f\"{u}r das Ingenieurstudium}}.
+\newblock Carl Hanser Verlag GmbH \& Co. KG, M\"{u}nchen, 3 edition, 2015.
+\newblock ISBN 978-3-446-44158-3.
+
+\bibitem[Rahmani~Doust(2014)]{lit:Doust2014}
+Mohammad~Hossein Rahmani~Doust.
+\newblock The lotka-volterra food chain model: Theory and importance.
+\newblock 16:\penalty0 6--13, 03 2014.
+
+\bibitem[{The MathWorks Inc.}(2021)]{lit:ode45}
+{The MathWorks Inc.}
+\newblock ode45, 2021.
+\newblock URL \url{https://de.mathworks.com/help/matlab/ref/ode45.html}.
+\newblock Letzter Zugriff: 15.02.2021.
+
+\end{thebibliography}

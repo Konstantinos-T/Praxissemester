@@ -1,0 +1,212 @@
+Im Folgendem wird erläutert, wie das Modell 1 der Lotka-Volterra-Gleichungen in MATLAB umgesetzt werden kann. Hierzu erfolgt, in einem ersten Schritt, die Diskretisierung bzw. Annäherung der Zustandsdifferentialgleichungen aus \autoref{sec:grundl:gl}. Diese kann, basierend auf \cite[S. 262, 296, 532 f.]{lit:Koch2015}, wie folgt definiert werden:
+
+\begin{align}
+	\frac{dx}{dt} = \dot{x} &\approx \frac{x_k - x_{k - 1}}{h} \nonumber \\
+	x_k &= x_{k - 1} + h \cdotp \dot{x} 
+	\label{eqn:haupt:diskret}
+\end{align}
+
+\autoref{eqn:haupt:diskret} beschreibt die Linearisierung einer Funktion $x(t)$. Dadurch ist eine Annäherung der Zustandsgrößen $x_1$ und $x_2$ möglich. Die momentane Änderung pro Iterationsschritt ist durch $\dot{x}$ gegeben und lässt sich anhand von \autoref{eqn:grundl:x1} und \autoref{eqn:grundl:x2} berechnen. Die Größe $h$ beschreibt die Schrittweite zwischen den Annäherungen. Diese Annäherung basiert auf dem Polygonzugverfahren von Euler (vgl. \cite[S. 534]{lit:Koch2015}). Die Beschreibung der kontinuierlichen Gleichungen in diskreter Form ermöglicht und vereinfacht die Implementierung.
+\\
+\\
+Der gesamte MATLAB Code ist hierbei unter \autoref{lst:matlab1:code} gegeben. In einem ersten Schritt müssen die Parameter $a_1, b_1, c_1, a_2$ und $b_2$ mit den entsprechenden Anfangswerten deklariert und initialisiert werden. Außerdem wird eine Maximaldauer $tmax = 50$ Wochen und der entsprechende Zeitschritt $dt = \frac{1}{7}$, der einer Änderung von einem Tag entspricht, festgelegt. Diese können dazu verwendet werden, um den Zeitvektor $t = \{0, 0+dt, 0+2 \cdot dt, \ldots, tmax-dt, tmax\}$ zu erstellen.
+
+\begin{lstlisting}[style=Matlab-editor,caption={Deklarieren und initialisieren von Parametern},captionpos=b,label=lst:matlab1:param,language=Matlab,basicstyle=\mlttfamily,numbers=none,frame=single,escapeinside={*@}{@*}]
+%% Randbedingungen / Parameter [pro Woche]
+
+% Beute / Hasen
+a1 = 0.05; % Geburtenrate: Verdopplung der Population in 20 Wochen
+b1 = 0.02; % Sterberate: 2% der Hasen sterben an natürlichen Ursachen
+c1 = 0.0006; % Fressrate der Füchse
+
+% Räuber / Füchse
+a2 = 0.0002; % Geburtenrate/Beutewahrscheinlichkeit der Füchse
+b2 = 0.1; % Sterberate: Füchse verlieren pro Woche 10% Biomasse
+
+% Anfangsbedingungen
+dt = 1/7; % Zeitschritt
+tmax = 51*10; % Dauer in Wochen
+t = 0:dt:tmax; % Zeitvektor
+\end{lstlisting}
+
+Um die bereits genannten Anfangszustände abzubilden, werden zwei \emph{for}-Schleifen durchlaufen, in denen $x1$ und $x2$ die entsprechenden Anfangswerte annehmen. Hierbei werden somit sechs verschiedene Anfangszustände abgebildet. Für jede Kombination dieser Anfangswerte wird, für jeden Zeitschritt, der entsprechende Wert für $x1$ und $x2$ bestimmt. Im ersten Zeitschritt werden hier die Zustandsvariablen mit den entsprechenden Anfangswerten initialisiert. \\In jedem weiteren Zeitschritt wird die Änderung der Beutepopulation $dx1$ sowie Räuberpopulation $dx2$ berechnet. 
+\\
+\\
+Diese werden mit der Schrittweite $h$ multipliziert und auf den $(i - 1)$-ten Wert der Populationen $x1$ und $x2$ addiert, um so den $i$-ten Wert der Zustandsvariablen zu bestimmen. Nach dem Durchlaufen aller Zeitschritte, kann der Verlauf der Populationen grafisch dargestellt werden.
+\\
+\\
+Nach dem Durchlaufen aller Zeitschritte sind alle Werte für die Zustandsvariablen berechnet. Diese werden verwendet, um die Verläufe der Populationen sowie die dazugehörige Phasenkurve darzustellen. Die einzelnen Phasenkurven werden hierbei in einen Plot eingetragen. Dies geschieht durch die Verwendung des Befehls \emph{hold(ax,'on')} bzw. \emph{hold(ax,'off')}.
+
+\begin{lstlisting}[style=Matlab-editor,caption={Berechnen der Verläufe und Phasenkurven der Populationen},captionpos=b,label=lst:matlab1:calc,language=Matlab,basicstyle=\mlttfamily,numbers=none,frame=single,escapeinside={*@}{@*}]
+% Eigene Axis für Phasenkurven
+ax = gca;
+
+%% Berechnung
+for x20 = [25 10]
+
+for x10 = [2500 1400 650]
+
+	% mit Anfangswerten initialisieren
+	x1(1) = x10;
+	x2(1) = x20;
+	
+	for i = 2:length(t)
+	
+	% Änderung der Beutepopulation
+	dx1 = a1*x1(i - 1) - b1*x1(i - 1) - c1*x2(i - 1)*x1(i - 1);
+	x1(i) = x1(i - 1) + dt*dx1;
+	
+	% Änderung der Räuberpopulation
+	dx2 = a2*x2(i - 1)*x1(i) - b2*x2(i - 1);
+	x2(i) = x2(i - 1) + dt*dx2;
+	
+	end
+	
+	figure
+	plot(t,x1,t,x2)
+	xlabel('Zeit in Wochen','Fontweight','bold')
+	ylabel('Population in Stk.','Fontweight','bold')
+	legend('Anzahl Beute','Anzahl Räuber')
+	set(gca,'Fontweight','bold')
+	
+	hold(ax,'on')
+	plot(ax,x1,x2)
+	hold(ax,'off')
+
+end
+
+end
+
+xlabel(ax,'Anzahl Hasen in Stk.','Fontweight','bold')
+ylabel(ax,'Anzahl Füchse in Stk.','Fontweight','bold')
+title(ax,'Phasenkurve x_2 = f(x_1)')
+set(ax,'Fontweight','bold')
+\end{lstlisting}
+
+Eine Alternative Möglichkeit, die Phasenkurven zu bestimmen, ist am Ende von \autoref{lst:matlab1:ode} gegeben. Hierzu werden \autoref{eqn:grundl:x1} und \autoref{eqn:grundl:x2} innerhalb einer anonymen Funktion gespeichert, die durch \enquote{@} deklariert wird. Dieser werden die Parameter $t$ und $x$ übergeben, die entsprechend den Zeitvektor und den Vektor von Zustandsvariablen darstellen. Die Differentialgleichungen, die in dem Function Handle $f$ gespeichert sind, werden numerisch durch den \enquote{ode45}-Solver gelöst bzw. approximiert. Dieser basiert auf dem Runge-Kutta Einschrittverfahren \cite{lit:ode45}. Hierbei wird ein Zeitvektor und bestimmte Anfangswerte an den Solver als Parameter übergeben. Die Anfangszustände werden hierbei mit verschiedenen Faktoren von 0.5 bis 2 multipliziert, um verschiedene Trajektorien abzubilden. Die Lösungswerte in $xs$ enthalten die angenäherten Werte der Zustandsvariablen.
+
+\begin{lstlisting}[style=Matlab-editor,caption={Bestimmung der Phasenkurven durch den ode45-Solver},captionpos=b,label=lst:matlab1:ode,language=Matlab,basicstyle=\mlttfamily,numbers=none,frame=single,escapeinside={*@}{@*}]
+figure
+hold on
+% Zustandsdifferentialgleichungen in anonymer Funktion speichern
+f = @(t,x) [x(1)*(a1 - b1 - c1*x(2)); x(2)*(a2*x(1) - b2)];
+
+%Phasenkurven für verschiedene Anfangsbedingungen bestimmen
+for x20 = [25 10]
+
+for x10 = [2500 1400 650]
+
+	% Verlauf mit ode45 solver berechnen
+	[~, xs] = ode45(f,t, [x10, x20]);
+	% Phasenkurve plotten
+	plot(xs(:,1), xs(:,2))
+
+end
+
+end
+
+xlabel('Anzahl Hasen in Stk.','Fontweight','bold')
+ylabel('Anzahl Füchse in Stk.','Fontweight','bold')
+title('Phasenkurve x_2 = f(x_1)')
+set(gca,'Fontweight','bold')
+hold off
+\end{lstlisting}
+
+\FloatBarrier
+
+\autoref{img:haupt:mod1_2500_25} bis \autoref{img:haupt:mod1_650_25} zeigen den Verlauf der Räuber- und Beutepopulation für $x_{20} = 25$. Hierbei werden für $x_{10} = \{2500, 1400, 650\}$ gewählt. Es ist zu beobachten, dass die Beutetiere, da sie die einzige Nahrungsquelle der Räuber sind, durch diese aufgezehrt werden.
+\\
+\\
+Aufgrund dessen verringert sich die Beutepopulation rapide. Dieser Verlauf hält an, bis die Beutepopulation nicht mehr als Nahrungsquelle für die Räuber ausreicht. Dies hat zur Folge, dass sich die Anzahl der Räuber verringert. Durch eine verminderte Räuberpopulation ist es den Beutetieren wieder möglich, sich zu vermehren. Dieses Wachstum hält an, bis die erhöhte Beutepopulation erneut ausreichend für die Räuber ist, um sich verstärkt zu vermehren. Das Verhalten der beiden Populationen wird periodisch wiederholt.
+\\
+\\
+Bei Betrachten der Verläufe, für die genannten Anfangswerte, hat es den Anschein, dass größere Werte für $x_{10}$ und $x_{20}$ in einer höheren Amplitude und längeren Periode resultieren. Für $x_{10} = 2500$ und $x_{20} = 25$ ergibt sich, aus \autoref{img:haupt:mod1_2500_25}, eine ungefähre Periode von ca. 210 Wochen. Dies entspricht einem Zeitraum von ca. vier Jahren. Die Beutetiere erreichen hierbei eine maximale Anzahl von ca. $2500$ wohingegen die Räuber $x_2$ eine maximale Anzahl von ca. $500$ Tieren erreichen. Die Schwankungen der beiden Populationen bewegen sich hierbei, näherungsweise, zwischen diesen Maximalzahlen.
+\\
+\\ 
+Im Gegensatz dazu bewirken kleinere Anfangswerte $x_{10}$, bei festem $x_{20}$, scheinbar eine geringere Amplitude und Periode. In \autoref{img:haupt:mod1_650_25} ist zu erkennen, dass die Schwankungen der Populationen, für $x_{10} = 650$ und $x_{20} = 25$, geringer sind, als für $x_{10} = 2500$ und $x_{20} = 25$. Die Anzahl an Beutetieren schwankt hierbei zwischen ca. 300 und 700. Die Räuber schwanken zwischen ca. 25 und 100. Die Periode beträgt hierbei ca. 150 Wochen. Dies entspricht ca. 3 Jahren.
+\\
+\\
+In \autoref{img:haupt:mod1_2500_10} bis \autoref{img:haupt:mod1_650_10} sind die Verläufe der Räuber- und Beutepopulationen für $x_{20} = 10$ und $x_{10} = \{2500, 1400, 650\}$ dargestellt. Hierbei sind, für die Amplitude und Periodizität, ähnliche Aussagen wie für \autoref{img:haupt:mod1_2500_25} bis \autoref{img:haupt:mod1_650_25} zu treffen.
+\\
+\\
+Es liegt die Vermutung nahe, dass geringere Anfangswerte für $x_1$ und $x_2$ in einer geringeren Amplitude der jeweiligen Population resultiert. Wie die Ergebnisse für $x_{10} = 650$ in \autoref{img:haupt:mod1_650_25} bzw. \autoref{img:haupt:mod1_650_10} zeigen, ist dies nicht immer der Fall. Es ist anzumerken, dass die Populationen, für beispielsweise $x_{10} = 650$ und $x_{20} = 10$, höhere Schwankungen aufweisen, als für $x_{10} = 650$ und $x_{20} = 25$.
+\\
+\\
+Dieses Verhalten ist mit Hilfe der Phasenkurven zu erklären. Diese sind, in \autoref{img:haupt:mod1_phasen}, für die Anfangswerte $x_{10} = \{2500, 1400, 650\}$ und $x_{20} = \{25, 10\}$ beispielhaft dargestellt. Hierbei sind in \autoref{img:haupt:mod1_phase} die Verläufe der jeweiligen Populationen in der Zustandsebene, auf Basis der mathematischen Beschreibung $x_2 = f(x_1)$, aufgetragen. In \autoref{img:haupt:mod1_phase_ode} sind die, durch den \enquote{ode45}-Solver bestimmten, Phasenkurven dargestellt. Hierbei resultieren die Ungenauigkeiten der Kurven in \autoref{img:haupt:mod1_phase_ode} aus den Annäherungen, die der \enquote{ode45}-Solver verwendet, um die Zustandsdifferentialgleichungen zu approximieren. Aus den daraus resultierenden Fehlern resultiert eine Abweichung der Phasenkurven, die sich mit der Zeit erhöht. Die auf dem Polygonzugverfahren von Euler basierende Implementierung in \autoref{lst:matlab1:calc} weist hierbei eine geringere Abweichung über der Zeit, als der auf dem Runge-Kutta Verfahren basierende \enquote{ode45}-Solver auf.
+\\
+\\
+Durch den Anfangszustand, der durch $x_{10}$ und $x_{20}$ gegeben ist, verläuft exakt eine dieser Trajektorien. Diese Trajektorie gibt den Verlauf der Populationen an, der sich, da es sich um geschlossene Kurven handelt, periodisch wiederholt. \\Durch den Umfang der Trajektorien ist die Amplitude des periodischen Verlaufs bzw. die Schwankungen der Populationen zu erkennen. Hierbei ist zu beobachten, dass eine Verringerung der Zustandsvariablen nicht unbedingt in einer geringeren Amplitude resultiert. Es ist ebenso möglich, dass eine Verringerung der Anfangszustände, je nach Lage der Trajektorie, zu einer höheren Amplitude führt.
+
+\FloatBarrier
+
+\begin{figure}
+	\centering
+	\begin{subfigure}[h]{0.49\linewidth}
+		\centering
+		\includegraphics[width=\linewidth,height=0.8\linewidth]{fig/model/Modell1_2500_25}
+		\caption{Modell \RN{1} für $x_{10} = 2500$ und $x_{20} = 25$}
+		\label{img:haupt:mod1_2500_25}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[h]{0.49\linewidth}
+		\centering
+		\includegraphics[width=\linewidth,height=0.8\linewidth]{fig/model/Modell1_1400_25}
+		\caption{Modell \RN{1} für $x_{10} = 1400$ und $x_{20} = 25$}
+		\label{img:haupt:mod1_1400_25}
+	\end{subfigure}
+	\vfill
+	\begin{subfigure}[h]{0.49\linewidth}
+		\centering
+		\includegraphics[width=\linewidth,height=0.8\linewidth]{fig/model/Modell1_650_25}
+		\caption{Modell 1 für $x_{10} = 650$ und $x_{20} = 25$}
+		\label{img:haupt:mod1_650_25}
+	\end{subfigure}
+	\caption{Modell \RN{1} für $x_{20} = 25$ und $x_{10} = \{2500, 1400, 650\}$}
+	\label{img:haupt:mod1_x10_25}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\begin{subfigure}[h]{0.49\linewidth}
+		\centering
+		\includegraphics[width=\linewidth,height=0.8\linewidth]{fig/model/Modell1_2500_10}
+		\caption{Modell \RN{1} für $x_{10} = 2500$ und $x_{20} = 10$}
+		\label{img:haupt:mod1_2500_10}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[h]{0.49\linewidth}
+		\centering
+		\includegraphics[width=\linewidth,height=0.8\linewidth]{fig/model/Modell1_1400_10}
+		\caption{Modell \RN{1} für $x_{10} = 1400$ und $x_{20} = 10$}
+		\label{img:haupt:mod1_1400_10}
+	\end{subfigure}
+	\vfill
+	\begin{subfigure}[h]{0.49\linewidth}
+		\centering
+		\includegraphics[width=\linewidth,height=0.8\linewidth]{fig/model/Modell1_650_10}
+		\caption{Modell \RN{1} für $x_{10} = 650$ und $x_{20} = 10$}
+		\label{img:haupt:mod1_650_10}
+	\end{subfigure}
+	\caption{Modell \RN{1} für $x_{20} = 10$ und $x_{10} = \{2500, 1400, 650\}$}
+	\label{img:haupt:mod1_x10_10}
+\end{figure}
+
+\begin{figure}
+	\begin{subfigure}[h]{0.49\linewidth}
+		\centering
+		\includegraphics[width=\linewidth,height=0.8\linewidth]{fig/model/Modell1_Phase}
+		\caption{Iterativ berechnete Phasenkurven}
+		\label{img:haupt:mod1_phase}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[h]{0.49\linewidth}
+		\centering
+		\includegraphics[width=\linewidth,height=0.8\linewidth]{fig/model/Modell1_PhaseOde}
+		\caption{Phasenkurven des ode45-Solver}
+		\label{img:haupt:mod1_phase_ode}
+	\end{subfigure}
+	\caption{Phasenkurven $x_2 = f(x_1)$ des Modell \RN{1} für verschiedene Anfangswerte}
+	\label{img:haupt:mod1_phasen}
+\end{figure}
+
+\FloatBarrier

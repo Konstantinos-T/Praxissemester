@@ -1,0 +1,76 @@
+Nachfolgend wird beschrieben, wie sich ein einmaliger Eingriff, beispielsweise durch Halbierung der Räuberpopulation, auf die Populationen auswirken kann. Dies ist beispielsweise eine wichtige Fragestellung in dem Bereich der Landwirtschaft. Hierbei können schädliche Insekten als Beute und Parasiten, die sich von den Insekten ernähren, als Räuber interpretiert werden. Beide dieser Populationen sind Schädlinge, die in der Landwirtschaft bekämpft werden. Hierbei stellt sich die Frage welcher Zeitpunkt, während des periodischen Bio-Zyklus, als günstig angesehen wird, um die Populationen zu verringern oder vernichten. Ein Eingreifen zu einem ungünstigen Zeitpunkt kann die momentane Trajektorie in eine andere mit einer weitaus höheren Schwankungen der Populationen transformieren. \cite[S. 35 f.]{lit:Foellinger1982}
+\\
+\\
+Um einen passenden Zeitpunkt für die Schädlingsbekämpfung treffen zu können, werden zunächst die Phasenkurven in \autoref{img:haupt:phaseE} und die entsprechende Gleichgewichtslage analysiert. Die folgenden Geraden schneiden den stationären Zustand und teilen die Zustandsebene in vier Subquadranten \cite[S. 7]{lit:Helmreich2011}:
+
+\begin{align}
+	x_2 &= \frac{(a_1 - b_1)}{c_1} 
+	\label{eqn:haupt:x2E} \\
+	x_1 &= \frac{a_2}{b_2}
+	\label{eqn:haupt:x1E}
+\end{align}
+
+Der erste Subquadrant ist durch $x_2 \leq \frac{a_1 - b_1}{c_1}$ und $x_1 \leq \frac{a_2}{b_2}$ definiert. Dieser Teilbereich der Phasenkurven ist dadurch gekennzeichnet, dass sich die Anzahl an Räubern $x_2$ verringert, während sich die Beutepopulation $x_1$ erhöht. Eine Halbierung der Räuberpopulation $x_2$ hat hierbei die Transformation in eine Trajektorie mit einem größeren Umfang zur Folge. Die Schwankungen der beiden Populationen würden in diesem Fall zunehmen.
+\\
+\\
+In dem zweiten Subquadranten gelten für $x_1 > \frac{a_2}{b_2}$ und $x_2 \leq \frac{a_1 - b_1}{c_1}$. Hierbei steigen beide Populationen an. \\Eine Halbierung der Räuber in diesem Subquadranten hat, wie im ersten Fall, eine Erhöhung der beiden Populationen zur Folge.
+\\
+\\
+Der dritte Subquadrant ist durch $x_1 > \frac{a_2}{b_2}$ und $x_2 > \frac{a_1 - b_1}{c_1}$ definiert. Die Beutepopulation nimmt hierbei ab, während die Räuber sich vermehren. Eine Verringerung der Räuberpopulation hat, in diesem Fall, eine Verminderung beider Populationen zur Folge. Es erfolgt hierbei eine Transformation in eine der Gleichgewichtslage näher gelegenen Trajektorie, die einen geringeren Umfang und somit geringere Schwankungen der Populationen aufweist. 
+\\
+\\
+In dem vierten Subquadranten ist die Beutepopulation $x_1 \leq \frac{a_2}{b_2}$ und die Anzahl der Räuber $x_2 > \frac{a_1 - b_1}{c_1}$. In diesem Teilbereich verringern sich beide Populationen. Eine Verminderung der Räuber hat, wie für den dritten Subquadranten, eine Transformation in eine der Gleichgewichtslage näher gelegenen Trajektorie zur Folge. Die Schwankungen der Populationen verringern sich ebenso für diesen Subquadranten.
+\\
+\\
+Durch diese Fallunterscheidung lässt sich auf einen günstigen Zeitpunkt schließen, um die Räuberpopulation dauerhaft zu verringern. Wenn diese bei einer Anzahl von $x_2 \geq 2 \cdot \frac{a_1 - b_1}{c_1}$ halbiert wird, resultiert dies in einer Transformation der momentanen Trajektorie in eine der Gleichgewichtslage näher gelegenen Phasenkurve. Der neue Verlauf des Bio-Zyklus ist durch geringere Schwankungen der Populationen charakterisiert. Dies ist unabhängig von der aktuellen Beutepopulation $x_1$.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.6\linewidth,height=0.5\linewidth]{fig/exp/phaseE}
+	\caption{Subquadranten der Trajektorien}
+	\label{img:haupt:phaseE}
+\end{figure}
+
+In \autoref{img:haupt:eingriffs} sind die Auswirkungen eines Eingriffs, zu einem ungünstigem Zeitpunkt, dargestellt. Eine Halbierung des Fuchsbestandes führt hierbei zu einer Veränderung der Trajektorie. Die Transformation der Phasenkurve ist in \autoref{img:haupt:phaseEs} aufgezeigt. Die neue Trajektorie besitzt einen höheren Umfang. Daraus folgt eine Zunahme an Schwankungen der Populationen. In \autoref{img:haupt:modellEs} sind diese dargestellt. Nach dem Eingriff sind größere Amplituden während des periodischen Verlaufs zu vermerken.
+
+\begin{figure}
+	\begin{subfigure}[h]{0.49\linewidth}
+		\centering
+		\includegraphics[width=\linewidth,height=0.8\linewidth]{fig/exp/phaseEs}
+		\caption{Phasenkurve}
+		\label{img:haupt:phaseEs}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[h]{0.49\linewidth}
+		\centering
+		\includegraphics[width=\linewidth,height=0.8\linewidth]{fig/exp/modellEs}
+		\caption{Verlauf der Populationen}
+		\label{img:haupt:modellEs}
+	\end{subfigure}
+	\caption{Auswirkungen eines Eingriff zu einem ungünstigem Zeitpunkt}
+	\label{img:haupt:eingriffs}
+\end{figure}
+
+In \autoref{img:haupt:eingrifff} sind die gewünschten Auswirkungen eines Eingriffs dargestellt. In \autoref{img:haupt:phaseEf} ist die Transformation in eine, der Gleichgewichtslage näher gelegenen, Trajektorie zu erkennen. Daraus folgt ein stabilerer Verlauf der Populationen. Die Schwankungen bzw. Amplitude des periodischen Verlaufs ist hierbei, für beide Populationen, geringer.
+
+\begin{figure}
+	\begin{subfigure}[h]{0.49\linewidth}
+		\centering
+		\includegraphics[width=\linewidth,height=0.8\linewidth]{fig/exp/phaseEf}
+		\caption{Phasenkurve}
+		\label{img:haupt:phaseEf}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[h]{0.49\linewidth}
+		\centering
+		\includegraphics[width=\linewidth,height=0.8\linewidth]{fig/exp/modellEf}
+		\caption{Verlauf der Populationen}
+		\label{img:haupt:modellEf}
+	\end{subfigure}
+	\caption{Auswirkungen eines Eingriff zu einem günstigem Zeitpunkt}
+	\label{img:haupt:eingrifff}
+\end{figure}
+
+
+
+\FloatBarrier

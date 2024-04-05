@@ -1,0 +1,178 @@
+Die Realisierung des Modells \RN{2}, unter Verwendung von MATLAB, ist in \autoref{lst:matlab2:code} gegeben. Die Implementierung ist, bis auf spezifische Anpassungen für Modell \RN{2}, weitestgehend identisch mit der Realisierung in \autoref{lst:matlab1:code}. Die Parameter $a_1, b_1, c_1, a_2$ und $b_2$ werden in einem ersten Schritt deklariert und initialisiert. Ebenso wird der Zeitvektor $t$, mithilfe der Dauer $tmax$ und dem entsprechenden Zeitschritt $dt$, erstellt. Es wird eine weitere Variable $W$ deklariert und initialisiert, mit der die Weidefläche bzw. Kapazitätsgrenze abgebildet werden kann.
+
+\begin{lstlisting}[style=Matlab-editor,caption={Deklarieren und initialisieren von Parametern},captionpos=b,label=lst:matlab2:param,language=Matlab,basicstyle=\mlttfamily,numbers=none,frame=single,escapeinside={*@}{@*}]
+%% Randbedingungen / Parameter [pro Woche]
+
+% Beute / Hasen
+a1 = 0.05; % Geburtenrate: Verdopplung der Population in 20 Wochen
+b1 = 0.02; % Sterberate: 2% der Hasen sterben an natürlichen Ursachen
+c1 = 0.0006; % Fressrate der Füchse
+
+% Räuber / Füchse
+a2 = 0.0002; % Geburtenrate/Beutewahrscheinlichkeit der Füchse
+b2 = 0.1; % Sterberate: Füchse verlieren pro Woche 10% Biomasse
+
+% Anfangsbedingungen
+W = 1400; % Maximalzahl der Hasen
+dt = 1/7; % Zeitschritt
+tmax = 51*10; % Dauer in Wochen
+t = 0:dt:tmax; % Zeitvektor
+\end{lstlisting}
+
+Wie in Modell \RN{1}, werden sechs Anfangszustände für $x_{10} = \{2500, 1400, 650\}$ und $x_{20} = \{25, 10\}$ in $for$-Schleifen abgebildet. Es wird für jeden Zeitschritt die Änderung der Beute- und Räuberpopulation berechnet. Hierbei wird die Berechnung, um die Änderung der Beutepopulation zu bestimmen, an das logistische Wachstum angepasst. Hierzu wird der Term $\frac{W - x1}{W}$ als weiterer Faktor, zur Wachstumsrate $r = a_1 - b_1$, hinzugefügt.
+
+\begin{lstlisting}[style=Matlab-editor,caption={Berechnen der Verläufe und Phasenkurven der Populationen},captionpos=b,label=lst:matlab2:calc,language=Matlab,basicstyle=\mlttfamily,numbers=none,frame=single,escapeinside={*@}{@*}]
+% Eigene Axis für Phasenkurven
+ax = gca;
+
+%% Berechnung
+
+for x20 = [25 10]
+
+for x10 = [2500 1400 650]
+
+	% mit Anfangswerten initialisieren
+	x1(1) = x10;
+	x2(1) = x20;
+	
+	for i = 2:length(t)
+	
+	% Änderung der Beutepopulation mit logistischem Wachstum
+	dx1 = 1/W*(W-x1(i - 1))*(a1 - b1)*x1(i - 1) - c1*x2(i - 1)*x1(i - 1);
+	x1(i) = x1(i - 1) + dt*dx1;
+	
+	% Änderung der Räuberpopulation
+	dx2 = (a2*x2(i - 1)*x1(i - 1) - b2*x2(i - 1));
+	x2(i) = x2(i - 1) + dt*dx2;
+	
+	end
+	
+	figure
+	plot(t,x1,t,x2)
+	xlabel('Zeit in Wochen','Fontweight','bold')
+	ylabel('Population in Stk.','Fontweight','bold')
+	legend('Anzahl Beute','Anzahl Räuber')
+	set(gca,'Fontweight','bold')
+	
+	hold(ax,'on')
+	plot(ax,x1,x2)
+	hold(ax,'off')
+
+end
+
+end
+
+xlabel(ax,'Anzahl Hasen in Stk.','Fontweight','bold')
+ylabel(ax,'Anzahl Füchse in Stk.','Fontweight','bold')
+title(ax,'Phasenkurve x_2 = f(x_1)')
+set(ax,'Fontweight','bold')
+\end{lstlisting}
+
+Die Phasenkurven lassen sich, ebenso wie für das Modell \RN{1}, mit dem \enquote{ode45}-Solver approximieren. Hierzu wird die angepasste \autoref{eqn:haupt:logw} und \autoref{eqn:grundl:x2} in einer anonymen Funktion gespeichert. 
+
+\begin{lstlisting}[style=Matlab-editor,caption={Bestimmung der Phasenkurven durch den ode45-Solver},captionpos=b,label=lst:matlab2:ode,language=Matlab,basicstyle=\mlttfamily,numbers=none,frame=single,escapeinside={*@}{@*}]
+figure
+hold on
+% Zustandsdifferentialgleichungen in anonymer Funktion speichern
+f = @(t,x) [x(1)*((a1 - b1)*(1/W*(W - x(1))) - c1*x(2)); x(2)*(a2*x(1) - b2)];
+
+%Phasenkurven für verschiedene Anfangsbedingungen bestimmen
+for x20 = [25 10]
+
+for x10 = [2500 1400 650]
+
+	% Verlauf mit ode45 solver berechnen
+	[~, xs] = ode45(f,t, [x10, x20]);
+	% Phasenkurve plotten
+	plot(xs(:,1), xs(:,2))
+
+end
+
+end
+
+xlabel('Anzahl Hasen in Stk.','Fontweight','bold')
+ylabel('Anzahl Füchse in Stk.','Fontweight','bold')
+title('Phasenkurve x_2 = f(x_1)')
+set(gca,'Fontweight','bold')
+hold off
+\end{lstlisting}
+
+\FloatBarrier
+
+Die Verläufe der Populationen sind in \autoref{img:haupt:mod2_2500_25} bis \autoref{img:haupt:mod2_650_10} dargestellt. Die entsprechenden Schwankungen der Populationen werden, durch die begrenzte Weidefläche, gedämpft. Es ist zu beobachten, dass beide Populationen gegen jeweils einen bestimmten Endwert konvergieren. Dieser ist unabhängig von den entsprechenden Anfangszuständen. Hierauf wird in \autoref{sec:haupt:stationaer} näher eingegangen. Es ist ebenfalls zu beobachten, dass die Beutepopulation für $x_1 \geq W$ rapide abfällt. Hierbei ist die Kapazitätsgrenze der Weidefläche erreicht und es stehen nicht genug Ressourcen für alle Beutetiere zur Verfügung. Für den Fall $x_{10} = 650$ und $x_{20} = 10$ in \autoref{img:haupt:mod2_650_10} ist, da hierbei $x_1 < W$ gilt, ein Wachstum der Beutepopulation möglich und zu verzeichnen.
+\\
+\\
+Die Phasenkurven der Anfangszustände $x_{10} = \{2500, 1400, 650\}$ und $x_{20} = \{25, 10\}$ für das Modell \RN{2} sind in \autoref{img:haupt:mod2_phasen} dargestellt. Hierbei sind keine wesentlichen Unterschiede zwischen der iterativen Berechnung der Phasenkurven und der Bestimmung durch den \enquote{ode45}-Solver zu verzeichnen. Im Gegensatz zu den Phasenkurven für das Modell \RN{1} in \autoref{img:haupt:mod1_phase} ist es schwieriger genauere Aussagen über den Einfluss der Anfangszustände zu machen. Der Verlauf der Phasenkurven ist hierbei wesentlich komplexer. Es ist jedoch das Konvergenzverhalten aller Phasenkurven in Richtung eines stationären Zustands anzumerken, der unabhängig von den Anfangszuständen ist.
+
+\begin{figure}
+	\centering
+	\begin{subfigure}[h]{0.49\linewidth}
+		\centering
+		\includegraphics[width=\linewidth,height=0.8\linewidth]{fig/model/Modell2_2500_25}
+		\caption{Modell \RN{2} für $x_{10} = 2500$ und $x_{20} = 25$}
+		\label{img:haupt:mod2_2500_25}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[h]{0.49\linewidth}
+		\centering
+		\includegraphics[width=\linewidth,height=0.8\linewidth]{fig/model/Modell2_1400_25}
+		\caption{Modell \RN{2} für $x_{10} = 1400$ und $x_{20} = 25$}
+		\label{img:haupt:mod2_1400_25}
+	\end{subfigure}
+	\vfill
+	\begin{subfigure}[h]{0.49\linewidth}
+		\centering
+		\includegraphics[width=\linewidth,height=0.8\linewidth]{fig/model/Modell2_650_25}
+		\caption{Modell 2 für $x_{10} = 650$ und $x_{20} = 25$}
+		\label{img:haupt:mod2_650_25}
+	\end{subfigure}
+	\caption{Modell \RN{2} für $x_{20} = 25$ und $x_{10} = \{2500, 1400, 650\}$}
+	\label{img:haupt:mod2_x10_25}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\begin{subfigure}[h]{0.49\linewidth}
+		\centering
+		\includegraphics[width=\linewidth,height=0.8\linewidth]{fig/model/Modell2_2500_10}
+		\caption{Modell \RN{2} für $x_{10} = 2500$ und $x_{20} = 10$}
+		\label{img:haupt:mod2_2500_10}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[h]{0.49\linewidth}
+		\centering
+		\includegraphics[width=\linewidth,height=0.8\linewidth]{fig/model/Modell2_1400_10}
+		\caption{Modell \RN{2} für $x_{10} = 1400$ und $x_{20} = 10$}
+		\label{img:haupt:mod2_1400_10}
+	\end{subfigure}
+	\vfill
+	\begin{subfigure}[h]{0.49\linewidth}
+		\centering
+		\includegraphics[width=\linewidth,height=0.8\linewidth]{fig/model/Modell2_650_10}
+		\caption{Modell \RN{2} für $x_{10} = 650$ und $x_{20} = 10$}
+		\label{img:haupt:mod2_650_10}
+	\end{subfigure}
+	\caption{Modell \RN{2} für $x_{20} = 10$ und $x_{10} = \{2500, 1400, 650\}$}
+	\label{img:haupt:mod2_x10_10}
+\end{figure}
+
+
+\begin{figure}
+	\begin{subfigure}[h]{0.49\linewidth}
+		\centering
+		\includegraphics[width=\linewidth,height=0.8\linewidth]{fig/model/Modell2_Phase}
+		\caption{Iterativ berechnete Phasenkurven}
+		\label{img:haupt:mod2_phase}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[h]{0.49\linewidth}
+		\centering
+		\includegraphics[width=\linewidth,height=0.8\linewidth]{fig/model/Modell2_PhaseOde}
+		\caption{Phasenkurven des ode45-Solver}
+		\label{img:haupt:mod2_phase_ode}
+	\end{subfigure}
+	\caption{Phasenkurven $x_2 = f(x_1)$ des Modell \RN{2} für verschiedene Anfangswerte}
+	\label{img:haupt:mod2_phasen}
+\end{figure}
+
+\FloatBarrier

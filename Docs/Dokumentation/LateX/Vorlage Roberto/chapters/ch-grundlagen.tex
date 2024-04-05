@@ -1,0 +1,423 @@
+\chapter{Grundlagen}
+\label{sec:grundl}
+In diesem Kapitel werden elementare Begriffe der Bachelorarbeit erläutert, sowie ein Grundverständnis zum zugrundeliegenden Thema vermittelt. Nachfolgend werden die Themen beschrieben, die zum Kontext dieser Arbeit gehören.
+
+\section{Autonomes Fahren}
+\label{sec:grundl:af}
+Kraftfahrzeuge sind schon seit langem ein essentieller Bestandteil der Gesellschaft. In logistischen Prozessen und Lieferketten tragen diese eine entscheidende Rolle. Ebenso im privaten und öffentlichem Sektor, erfüllen sie einen wichtigen Zweck. Dabei waren stets Innovationen zu vermerken. Schließlich entwickeln sich die Technologien im Automobilbereich stetig weiter. 
+\\
+\\
+Darunter zählt ebenso das Autonome Fahren. Durch verschiedene Assistenzsysteme - oder auch Advanced Driver Assistance Systems - bieten autonome Fahrzeuge mehr Sicherheit. Zu diesen gehören beispielsweise der Stop \& Go Pilot, Spurhalteassistent, Notbremsassistent oder die Einparkhilfe. Durch diese Fahrassistenzsysteme ist es möglich, dass \zB ein Fahrzeug schon heute teilweise selbständig auf der Autobahn fahren kann. Bei vollständiger Automatisierung benötigt das Fahrzeug keinen Fahrer mehr. Dies wird als autonomes Fahren bezeichnet. Die verschiedenen Automatisierungsstufen, des autonomen Fahrens, sind in \autoref{img:grundl:af} aufgezeigt. Im Folgenden werden diese, auf Basis von \cite{lit:af:lvl}, näher beschrieben.
+
+\subsection*{\textbf{Stand der Technik}}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\linewidth,height=0.6\linewidth]{fig/grundl/af/Level}
+	\caption{Automatisierungsstufen des autonomen Fahrens}
+	\label{img:grundl:af}
+\end{figure}
+
+Beim Level 1 des automatisierten Fahrens - oder auch assistiertem Fahren - hat der Fahrer durchgehend die alleinige Kontrolle über das Fahrzeug. Der Verkehr muss permanent im Blick behalten werden und die Haftung für Verkehrsverstöße oder Schäden liegt beim Fahrer. Assistenzsysteme, wie der Abstandsregeltempomat, der je nach Abstand zum vorausfahrenden Fahrzeug bremst oder beschleunigt, unterstützen heute schon den Fahrer bei entsprechenden Fahraufgaben.
+\\
+\\
+Bei Level 2-Fahrzeugen können, unter definierten Bedingungen, spezielle Aufgaben vom Fahrzeug selbst ausgeführt werden. So kann, ohne das Einwirken des Fahrers, beispielsweise auf der Autobahn die Spur gehalten, gebremst und beschleunigt werden. Dies wird, durch die Kombination von verschiedenen Assistenzsystemen, wie dem automatischen Abstandsregelautomat und dem Spurhalteassistent, möglich. Im Vergleich zu Level 1, kann der Fahrer, während des teilautomatisierten Modus, die Hände kurz vom Steuer nehmen. Dadurch werden Funktionen, wie der Überholassistent oder das automatische Einparken, ermöglicht. Dennoch muss der Fahrer, zu jeder Zeit, die Assistenzsysteme überwachen und bei Fehlfunktionen eingreifen können, um das Fehlverhalten dann zu kompensieren. \\Schließlich liegt, im Falle eines Unfalls, die Verantwortung weiterhin bei ihm. 
+\\
+\\
+Bei hochautomatisierten oder Level 3-Fahrzeugen darf sich der Fahrer, bei Hersteller-vorgege-benen Anwendungsfällen, von der Fahraufgabe abwenden. Das Fahrzeug fährt, für diesen begrenzten Zeitraum, selbstständig.
+\\
+\\
+Beim vollautomatisiertem oder Level 4-Fahren kann der Fahrer die Fahrzeugführung komplett abgeben. Bei Verkehrsverstößen, während der vollautomatisierten Fahrt, ist der Fahrer nicht haftbar. Das Fahrzeug ist in der Lage, auf bestimmten Strecken, völlig selbstständig, alle Fahraufgaben für eine längere Zeit, zu übernehmen. Die Insassen können währenddessen, etwaigen Nebentätigkeiten nachgehen. Das Fahrzeug kann allerdings auch ohne Insassen, entsprechende Fahraufgaben übernehmen. So können Level 4-Fahrzeuge in Parkhäusern automatisiert einen Parkplatz suchen oder ebenso bei hohen Geschwindigkeiten auf die Autobahn auffahren, sich in den Verkehr einordnen und eigenständig die Spur und den Abstand halten. Wenn das System während des vollautomatisierten Modus einen Fehler entdeckt, können die Passagiere entweder wieder die Kontrolle übernehmen oder das Fahrzeug begibt sich in einen sicheren Zustand.
+\\
+\\
+Das Level 5 oder autonome Fahren ist die letzte Stufe der Automatisierung bei Fahrzeugen. Es gibt keinen Fahrer mehr, sondern nur noch Passagiere, die nicht mehr für Verkehrsverstöße oder Schäden haften. Die entsprechenden Hersteller, Halter oder Betreiber wären diesbezüglich haftbar beziehungsweise eine Versicherung müsste für eventuelle Schäden aufkommen.
+\\
+\\
+Neben der Einstufung in 5 Level, gibt es noch ein Konzept mit drei Betriebsmodi. \\Der erste Betriebsmodus ist das unterstützende Fahren. In diesem muss der Fahrer den Verkehr stets im Blick behalten und ist alleine für die Fahrzeugführung verantwortlich. Fahrassistenzsysteme unterstützen den Fahrer nur. Bei einem Fehlverhalten oder Versagen dieser, haftet der Fahrer für Verkehrsverstöße oder Unfälle. Das automatisierte Fahren stellt den zweiten Betriebsmodus dar. Hierbei fährt das Fahrzeug, ausschließlich in vom Hersteller definierten Anwendungsfällen, selbstständig. Der Fahrer darf währenddessen eine Nebentätigkeit ausüben. Bei Aufforderung des Systems, muss dieser aber kurzfristig die Kontrolle übernehmen, da er sonst haftet. Im dritten Betriebsmodus, dem autonomen Fahren, fährt das Fahrzeug komplett selbstständig. Das System beherrscht kritische Fahrsituationen. Bei etwaigen Betriebsstörungen oder Fehlverhalten, muss ein Betreiber auf diese reagieren können. Dieser überwacht das autonome Fahrzeug nur, ist allerdings nicht selber Fahrer. Die Passagiere haften in diesem Fall nicht.
+\\
+\\
+Ein autonomes Fahrzeug muss seine Umgebung erfassen und die daraus gewonnen Informationen verarbeiten können. Hierzu werden verschiedenste Sensoren verwendet, die in \autoref{img:grundl:sensoren} dargestellt sind.
+\begin{figure}
+	\centering
+	\includegraphics[width=0.9\linewidth,height=0.55\linewidth]{fig/grundl/af/Sensoren}
+	\caption{Sensoren in einem Fahrzeug}
+	\label{img:grundl:sensoren}
+\end{figure}
+Hierbei haben Ultraschallsensoren und Kurzstrecken-Radar eine kleine Reichweite und werden zur Hinderniserkennung sowie zum Parken eingesetzt. Langstrecken-Radar können Objekte in großer Entfernung sowie ihre Position und Geschwindigkeit bestimmen. LIDAR- und Laser-Sensoren erstellen, mit Hilfe von Laser-Licht, ein hochauflösendes 3D-Abbild der Umgebung. Zusätzlich liefern Kamerasysteme, optische Informationen über Textur und Farbe eines Objektes. Infrarot-Sensoren sind vor allem für die Nachtsicht relevant. Durch die Kombination der verschiedenen Sensor-Daten ist eine nahezu exakte Erfassung des Umfelds möglich. Diese Umgebungsdaten können, durch die Informationen von anderen Fahrzeugen sowie der Verkehrs-Infrastruktur, ergänzt werden. Intelligente Softwarealgorithmen verarbeiten, mit Hilfe von leistungsstarken Microcontrollern und Prozessoren, die verschiedenen Daten, um das Fahrzeug autonom Fahren zu lassen. \cite{lit:af:sensoren}
+
+\subsection*{\textbf{Motivation und Vorteile}}
+
+Da bei autonomen Fahrzeugen kein Fahrer mehr notwendig ist, ergeben sich dadurch verschiedene Chancen und Vorteile in den Bereichen Gesellschaft, Wirtschaft und Sicherheit. Durch das Wegfallen eines Fahrers, haben die Passagiere, die gewonnene Fahrtzeit, für andere Aktivitäten zur Verfügung. Ebenso können durch das autonome Fahren Mobilitätseingeschränkte, wie Personen im hohen Alter, mit Behinderungen oder ohne Fahrerlaubnis, durch eine erhöhte Mobilität verstärkt am gesellschaftlichen Leben und Straßenverkehr teilnehmen. \cite{lit:af:chancen}
+\\
+\\
+Durch diese erhöhte Nutzer- und Kundengruppen, ergeben sich neue Möglichkeiten für Hersteller und Betreiber, diese durch neue Mobilitätskonzepte, zu erschließen. Eines dieser Konzepte, nämlich das Car-Sharing, gibt es bereits heute und kann auf das autonome Fahren angepasst werden. So könnte sich ein autonomes Fahrzeug selbstständig, vom Nutzer aus, einen Parkplatz suchen und umgekehrt. Alternativ wäre es ebenso denkbar, dass sich das Fahrzeug eigenständig zum gewünschten Zielort des nächsten Nutzers bewegt. \cite{lit:af:chancen}
+\\
+\\
+Hinzu kommen, durch das Wegfallen des Fahrers, bei autonomen öffentlichen Verkehrsmitteln, eine höhere Flexibilisierung und Bedarfsorientierung in Bezug auf Einsatzzeit und -gebiet. Durch eine hohe Anzahl an Sensoren, die verschiedene Daten erfassen, ergibt sich eine große Menge an Informationen, wodurch autonome Fahrzeuge präziser durch den Straßenverkehr manövrieren können. Dadurch ergibt sich eine Reduzierung der benötigten Verkehrs- und Parkflächen, insbesondere in Stadtzentren. \cite{lit:af:chancen}
+\\
+\\
+Ebenso werden die Kapazitäten im Straßenverkehr effizienter genutzt, da die benötigte Zeit, beispielsweise beim Abbiegevorgang, an Lichtanlagen sowie die Reaktionszeit verringert werden kann. Es werden, im Allgemeinen, höhere Geschwindigkeiten im Straßenverkehr ermöglicht. Aufgrund dieser Aspekte, ergeben sich entsprechende Rationalisierungseffekte. Das Wegfallen eines Fahrers führt beispielsweise im Mobilitäts- und Transportsektor zu Kosteneinsparungen und somit zu Effizienzsteigerungen. Dadurch werden ebenso die Umweltauswirkungen im Straßenverkehr verringert, da Fahrvorgänge optimiert werden und somit der Energie- und Emissionsausstoß sinkt. \cite{lit:af:chancen}
+\\
+\\
+In Deutschland waren in 2017 91\% der Verkehrsunfälle auf menschliches Versagen zurückzuführen \cite{lit:af:unfall}. Dies entsprach der Hauptunfallursache im Straßenverkehr. Bei autonomen Fahrzeugen kann diese als Unfallursache ausgeschlossen werden, welches zu einer Erhöhung der Verkehrssicherheit führt. Hierfür müssen allerdings autonome Fahrzeuge komplexe Verkehrssituationen und fahrkritische Szenarien wahrnehmen und interpretieren können.
+
+\subsection*{\textbf{Blick in die Zukunft}}
+
+Derzeit befinden sich auf den deutschen Straßen höchstens Level 2-Fahrzeuge. Diese sind mit Assistenzsystemen ausgerüstet, welche es dem Fahrer erlauben, kurzfristig die Kontrolle über die Lenkung abzugeben. Laut einer Studie von deloitte möchten aktuell 90\% der befragten Fahrer aber ebenso jederzeit die Kontrolle über ihr Fahrzeug übernehmen können \cite{lit:af:deloitte}. Das zeigt auf, dass die Akzeptanz und das Vertrauen in autonome Fahrzeuge noch stark verbessert werden muss, bevor sich diese im deutschen Straßenverkehr durchsetzen können. \\Die Sicherheit und Verlässlichkeit des Systems sind hierbei die kritischen Faktoren. 
+\\
+\\
+Demgegenüber stehen Aspekte, wie der erhöhte Komfort und die Erschließung neuer Mobilitätskonzepte. Durch autonome Fahrzeuge können Flottenbetreiber individuellere Mobilitäten ermöglichen, wodurch sich ebenso der Trend vom Besitz zum Car-Sharing verstärken könnte. Viele weitere Faktoren und Rahmenbedingungen müssen jedoch erst noch geklärt werden, damit sich die Akzeptanz für das autonome Fahren erhöht und dieses realisierbar wird. Durch diese Herausforderungen ist eine Einführung von Level 4- oder Level 5-Fahrzeugen, voraussichtlich, nicht vor 2040 zu erwarten. \cite{lit:af:prognose}
+
+
+\subsection*{\textbf{Herausforderungen}}
+
+Bevor sich autonome Fahrzeuge im Straßenverkehr durchsetzen, gibt es einige Herausforderungen, die vorher zu bewältigen sind. Die Wichtigste stellt hierbei das System für autonome Fahrzeuge an sich dar. Diese müssen im dynamischen Straßenverkehr mit jeder Situation umgehen können. Dazu muss die gesamte Umgebung in Echtzeit erfasst und die Fahrsituation interpretiert werden. Die gesammelten Daten dienen als Grundlage für die Bestimmung der eigenen Fahrzeugbewegung sowie für Prognosen über die Bewegung der weiteren Verkehrsteilnehmer. Diese Anforderungen muss das System, ebenso in komplexen Situationen, regelkonform bewältigen, um die Sicherheit der Insassen und anderer Verkehrsteilnehmer zu gewährleisten. \cite{lit:af:chancen}
+\\
+\\
+Zusätzlich muss dieses Systemfehler erkennen und sich bei Bedarf in einen sicheren Zustand begeben können. Um so ein System zu gewährleisten, werden mehr Informationen als bei konventionellen Fahrzeugen, benötigt. Hierzu muss die entsprechende Infrastruktur noch entwickelt bzw. ausgebaut werden, damit die schnelle und fehlerfreie Fahrzeugkommunikation, unter Fahrzeugen, sichergestellt werden kann. Die erhöhte Anzahl an Kommunikationsschnittstellen stellen allerdings auch steigende Angriffsvektoren dar. Personenbezogene Daten wie die Adresse, Fahrtziele oder audiovisuelle Aufzeichnungen müssen sicher und anonymisiert gespeichert werden. Außerdem wächst das Risiko von Cyberangriffen auf die digitale Infrastruktur und autonome Fahrzeuge. Dies zählt zum Bereich Security. \cite{lit:af:cyber}
+\\
+\\
+Der langsame Wandel des Straßenverkehrs und der Infrastruktur wird die Einführung des Mischverkehrs, von konventionellen und autonomen Fahrzeugen, unvermeidbar machen, wodurch viele ethische Fragen im Bezug auf die Haftung geklärt werden müssen. Ein zentrales Problem bei autonomen Fahrzeugen, ist das ethisch korrekte Verhalten im Straßenverkehr. Eine hohe Anzahl an Faktoren nehmen auf die Algorithmen autonomer Fahrzeuge Einfluss, wodurch Dilemma-Situationen entstehen können. Eine solche Situation kann auftreten, wenn \zB eine Person eine rote Ampel überquert. Ein autonomes Fahrzeug, dass durch eine Notbremsung nicht mehr vor dem Fußgänger zum Halten kommen kann, wird hier versuchen, ein Ausweichmanöver durchzuführen. Wenn sich auf der Gegenfahrbahn Fahrzeuge mit weiteren Insassen befinden, bleibt noch die Option auf den Gehweg auszuweichen. Angenommen, dass sich auf diesem auch Personen befinden, kann das autonome Fahrzeug einen Personenschaden nicht verhindern. Wer in solchen Fällen haftet und wie in diesen und weiteren fahrkritischen Szenarien entschieden werden soll, ist ein Kernaspekt, der noch zu klären ist. Um die Akzeptanz für das autonome Fahren, als Technologie bzw. Mobilitätskonzept, zu stärken, ist es essentiell, diese Herausforderungen zu lösen. \cite{lit:af:ethik}
+
+\FloatBarrier
+\section{Künstliche Intelligenz und Maschinelles Lernen}
+\label{sec:grundl:ki}
+
+Der Begriff künstliche Intelligenz wird in verschiedenen Anwendungsbereichen genannt. Dieser ist allerdings sehr abstrakt. Für die allgemeine Bevölkerung ist es unklar, welches Problem gelöst werden soll und welche Lösungsalgorithmen eingesetzt werden. Der Grund hierfür liegt zum Teil in der Komplexität dieser Algorithmen. Im Folgenden wird diese Thematik näher betrachtet und erläutert.
+
+\subsection*{\textbf{Definition von künstlicher Intelligenz}}
+Die Informatik enthält viele Teilgebiete. Der Bereich Data Science zählt dazu. Dieses Gebiet befasst sich damit, Erkenntnisse aus großen Datensätzen, zu gewinnen. Hierzu werden meist statistische Methoden angewandt. Ein spezieller Bereich dieses Themenbereichs ist die künstliche Intelligenz. Hierbei wird das kognitive Verhalten des Menschen imitiert. Ein spezieller Fall von künstlicher Intelligenz ist das Machine Learning. Dabei wird, anders als in anderen Teilgebieten der Informatik, kein Lösungsalgorithmus vorgegeben. Die Algorithmen erkennen, durch wiederholtes Ausführen, selbstständig Strukturen und Muster in den Daten und können so spezielle Aufgaben lösen. Das maschinelle Lernen kann in drei Arten eingeteilt werden. Dazu zählen das überwachte (supervised), unbewachte (unsupervised) und bestärkende (reinforcement) Lernen. \cite{lit:ki:def}
+
+\begin{figure}
+	\centering
+	\includegraphics[height=0.6\linewidth,width=\linewidth]{fig/grundl/ki/KI}
+	\caption{Teilgebiete der Informatik}
+	\label{img:grundl:ki}
+\end{figure}
+
+\subsection*{\textbf{Supervised Learning}}
+Das Supervised Learning zeichnet sich dadurch aus, dass bereits ein kategorisierter Datensatz vorliegt und so Machine Learning-Algorithmen direktes Feedback erhalten. Es besteht grundsätzlich die Aufgabe, einen gewissen Output zu prognostizieren. Wenn der Input einer bestimmten Klasse zugehörig ist, welche bestimmt werden soll, handelt es sich um eine Klassifizierung. Der Begriff überwachtes Lernen kommt daher, dass die Trainingsdatensätze, mit dem das Modell trainiert wird, bereits Labels enthalten, also in Klassen kategorisiert sind. Ein Beispiel für solche Labels können beispielsweise Buchstaben oder Ziffern sein. Das Modell kann allerdings nur diejenigen Labels bestimmen, die ebenso im Trainingsdatensatz vorhanden sind. Eine sogenannte Regressions-Aufgabe ist gegeben, falls die Ausgabe eines Machine Learning-Modells, die Prognose eines kontinuierlichen Wertes entspricht. Durch diese kontinuierlichen Modelle, lassen sich beispielsweise Vorhersagen über die Zukunft treffen. In beiden Fällen ist das Ziel, ein Modell zu erlernen, welches Prognosen über neue Daten bereitstellt. \cite{lit:Raschka2019}
+
+\subsection*{\textbf{Unsupervised Learning}}
+
+Im Gegensatz zum Supervised Learning, steht beim Unsupervised Learning kein Datensatz, mit bereits bekannten Labels, zur Verfügung. \\Diese Modelle und Algorithmen finden eigenständig Muster in Datensätzen und deren Eigenschaften. Eine Kategorie des Unsupervised Learning ist die Cluster-Analyse. Ziel dieser ist es, versteckte Strukturen in Datensätzen zu finden oder diese passend in Clustern zu gruppieren. Ein weiterer Anwendungsfall für das Unsupervised Learning, ist die Sprachverarbeitung oder auch Natural Language Processing. Hierbei wird die Sprache, in ihren verschiedenen Formen, analysiert. Die Sentimentanalyse, also die Analyse der menschlichen Stimmung und das Nutzerverhalten, ist ein Teilgebiet dieser Sprachverarbeitung. Generative Algorithmen gehören ebenso zum Bereich des Unsupervised Learning. Auf diesen Algorithmentyp wird später näher eingegangen. \cite{lit:Raschka2019}
+
+\subsection*{\textbf{ReinforcementLearning}}
+Eine weitere Art des maschinellen Lernens ist das Reinforcement Learning. Hierbei werden sogenannte Agenten analysiert, die durch Belohnungen oder Bestrafungen ihr Ziel, in einer bestimmten Umgebung oder Aufgabenstellung, optimieren. \cite{lit:Raschka2019}
+
+\subsection*{\textbf{Neuronale Netze}}
+
+Ein bekanntes Beispiel für ein Machine Learning-Modell bilden neuronale Netze (\textit{engl.: Neural Networks}). Diese sind inspiriert durch den Aufbau der Nervenzellen im menschlichen Gehirn. Wie im menschlichen Gehirn, werden hier künstliche Neuronen bzw. Synapsen, in Form von Reihen aus Datenknoten, miteinander verbunden. Weiterhin werden diese Verbindungen gewichtet. Bei jedem Lerndurchlauf der Daten werden diese Gewichte angepasst, bis das Modell zufriedenstellend arbeitet. Sobald das neuronale Netz, durch den Lernvorgang, die einzelnen Gewichte gelernt hat, kann es ebenso auf neue Daten angewandt werden. \newpage Falls das Netz versteckte Schichten enthält, die nicht direkt mit einer Ein- oder Ausgabeschicht verbunden sind, so handelt es sich um ein tiefes neuronales Netz (\textit{engl.: Deep Neural Network}). Umso mehr Schichten ein Deep Neural Network aufweist, desto komplexere Muster kann es erkennen bzw. erlernen, sowie anspruchsvollere Aufgaben lösen. \cite{lit:Raschka2019}
+%\workTodo{latex tikz package neuronales netz bild erstellen}
+%\begin{figure}
+%	\centering
+%	\begin{tikzpicture}[shorten >=1pt,->,draw=black!50, node distance=\layersep]
+%		\tikzstyle{every pin edge}=[<-,shorten <=1pt]
+%		\tikzstyle{neuron}=[circle,fill=black!25,minimum size=17pt,inner sep=0pt]
+%		\tikzstyle{input neuron}=[neuron, fill=green!50];
+%		\tikzstyle{output neuron}=[neuron, fill=red!50];
+%		\tikzstyle{hidden neuron}=[neuron, fill=blue!50];
+%		\tikzstyle{annot} = [text width=4em, text centered]
+%		
+%		% Draw the input layer nodes
+%		\foreach \name / \y in {1,...,4}
+%		% This is the same as writing \foreach \name / \y in {1/1,2/2,3/3,4/4}
+%		\node[input neuron, pin=left:Input \#\y] (I-\name) at (0,-\y) {};
+%		
+%		% Draw the hidden layer nodes
+%		\foreach \name / \y in {1,...,5}
+%		\path[yshift=0.5cm]
+%		node[hidden neuron] (H-\name) at (\layersep,-\y cm) {};
+%		
+%		% Draw the output layer node
+%		\node[output neuron,pin={[pin edge={->}]right:Output}, right of=H-3] (O) {};
+%		
+%		% Connect every node in the input layer with every node in the
+%		% hidden layer.
+%		\foreach \source in {1,...,4}
+%		\foreach \dest in {1,...,5}
+%		\path (I-\source) edge (H-\dest);
+%		
+%		% Connect every node in the hidden layer with the output layer
+%		\foreach \source in {1,...,5}
+%		\path (H-\source) edge (O);
+%		
+%		% Annotate the layers
+%		\node[annot,above of=H-1, node distance=1cm] (hl) {Hidden layer};
+%		\node[annot,left of=hl] {Input layer};
+%		\node[annot,right of=hl] {Output layer};
+%	\end{tikzpicture}
+%\end{figure}
+
+\subsection*{\textbf{Anwendungen}}
+
+Im Bereich der künstlichen Intelligenz hat es, in den letzten Jahren, enorme Fortschritte gegeben. Dadurch wurden neue Möglichkeiten und Anwendungsgebiete erschlossen. Mithilfe von Machine Vision-Algorithmen können Bilder analysiert und kategorisiert werden. Die extrahierten Informationen bilden die Basis für weitere Analysen. Hierfür finden sich beispielsweise Einsatzgebiete in der medizinischen Diagnostik, sowie bei der Erkennung von Personen und Gesichtern. Ein weiteres Einsatzgebiet, für das maschinelle Lernen, ist die Mustererkennung. Große Datenmengen oder -ströme sind für den Menschen schwer zu interpretieren, wohingegen Machine Learning-Algorithmen leichter diese Muster erkennen und dem Menschen Erkenntnisse liefern können. Mithilfe von künstlicher Intelligenz und den einzelnen Teildisziplinen lassen sich einige, der in \autoref{sec:grundl:af} genannten Herausforderungen und Anforderungen, lösen. Durch die Bilderkennung lassen sich beispielsweise Personen und Fahrzeuge im Straßenverkehr von autonomen Fahrzeugen identifizieren, wodurch diese ihre entsprechende Fahrtrajektorie planen können. Damit kann die Sicherheit, aller am Straßenverkehr Beteiligten, sichergestellt werden. \cite{lit:ki:anw}
+
+\FloatBarrier
+\section{Generative Algorithmen}
+\label{sec:grundl:gan}
+
+Die Modelle der künstlichen Intelligenz, die in \autoref{sec:grundl:ki} unter Supervised Learning genannt wurden, werden als diskriminative Algorithmen bezeichnet. So lassen sich, bei neuem Input, Prognosen darüber machen, zu welcher Klasse dieser wahrscheinlich gehört. Anders ausgedrückt, wird also die Wahrscheinlichkeit $p(y|x)$ geschätzt, dass ein Input $x$ der Klasse $y$ zugehörig ist. In den letzten Jahrzehnten wurden vorwiegend in den Bereichen von diskriminativen Algorithmen, speziell in der Klassifizierung, Fortschritte erzielt. 
+\\
+\\
+In diesem Kapitel sollen nun generative Algorithmen näher betrachtet werden. Erst in den letzten 5 bis 10 Jahren ergab sich eine stärkere Präsenz der generativen Algorithmen in der Praxis. Als wesentliche Grundlage diente hierbei die Funktionsweise eines sogenannten Autoencoders. Hierbei ermöglicht ein Encoder, hochdimensionale Merkmalsvektoren in einen niederdimensionalen latenten Raum, zu komprimieren. Basierend auf dem latenten Raum kann ein Decoder, mithilfe einer Transformation, den Originaldatensatz rückgewinnen. Ein solcher latenter Raum erzielt ebenso eine höhere Transparenz der wesentlichen Daten. Durch die Verwendung einer Verteilungsfunktion über diesem latenten Raum, erhält der Output eine Varianz, ist aber trotzdem ähnlich wie der Input. Bei der generativen  Modellierung sind normalerweise ungelabelte Datensätze die Basis für die Algorithmen. Es handelt sich also um eine Form des Unsupervised Learning. Hierbei wird $p(x)$, also die Wahrscheinlichkeit $x$ zu beobachten, geschätzt. Allerdings gibt es ebenso generative Modelle, die eine Mischform aus Supervised und Unsupervised Learning darstellen, falls ein gelabelter Datensatz vorliegt. In diesem Fall wird die Verteilung $p(x|y)$ geschätzt, also die Wahrscheinlichkeit $x$, bei gegebenen Labels $y$, zu beobachten. Bei generativen Algorithmen ist demnach die zugrundeliegende Verteilung des Datensatzes von Interesse. \cite{lit:Foster2020}
+\\
+\\
+Durch den Fokus auf eine derartige Verteilung der Daten ist es möglich, neue synthetische Daten zu generieren. Dabei ist davon auszugehen, dass ein Datensatz einer bestimmten Verteilung $p_{data}$ zugrunde liegt. Mit einem generativen Modell wird versucht, diese mit einer neuen Verteilung $p_{model}$ nachzubilden oder abzuschätzen. Dieser Vorgang gilt als erfolgreich, sofern durch $p_{model}$ Daten generiert werden können, die ähnlich wie die zugrundeliegenden Daten sind, sich allerdings so weit davon unterscheiden, dass sie nicht nur Reproduktionen oder aufgeprägtes Rauschen abbilden.\cite{lit:Foster2020}
+
+\subsection*{\textbf{Taxonomie von generativen Algorithmen}}
+
+Die grundlegenden generativen Algorithmentypen lassen sich, im Rahmen einer allgemeingültigen Taxonomie, gruppieren. Eine derartige Taxonomie ist in \autoref{img:grundl:gan} dargestellt \cite{lit:Goodfellow2017}.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\linewidth,height=0.6\linewidth]{fig/grundl/gan/GAN}
+	\caption{Grundlegende Taxonomie von generativen Algorithmen}
+	\label{img:grundl:gan}
+\end{figure}
+
+Hierbei werden alle Algorithmen von der Maximum Likelihood Estimation abgeleitet. Eine erste Gruppierung erfolgt in Bezug auf die Wahrscheinlichkeitsdichtefunktion der zugrundeliegenden Datenmenge. Zum einen kann diese explizit bzw. als geschlossener Ausdruck angegeben sein. Zum anderen kann diese implizit bzw. während des Trainingsvorgangs, geschätzt werden.
+\\
+\\
+Die expliziten Modelle können weiter in die Tractable Density und die Approximate Density unterteilt werden. Die Tractable Density Modelle können hierbei in Polynomialzeit berechnet werden. \newpage Zu diesen gehören generative Algorithmen wie die Fully visible belief nets, Neural Autoregressive Distribution Estimation (NADE), Masked Autoencoder for Distribution Estimation (MADE), Pixel Recurrent Neural Networks (PixelRNN) oder Change of variable models. Die Approximate Modelle schätzen, während des Trainingsvorgangs, eine explizite Dichtefunktion. Diese Approximation erfolgt entweder deterministisch oder stochastisch. Zu diesen Modellen gehören beispielsweise die Variational Autoencoder (VAE) oder Restricted Boltzmann Machines (RBM).
+\\
+\\
+Die impliziten generativen Modelle approximieren die Dichtefunktion eines Trainingsdatensatzes. Zu diesen gehören, die auf Markov-Ketten basierenden Generative Stochastic Networks (GSN) sowie die sogenannten Generative Adversarial Networks (GAN). Letztere erlangten, in den letzten Jahren, eine große Popularität und werden, im Folgenden, näher beschrieben.
+
+\subsection*{\textbf{Generative Adversarial Networks}}
+
+Das Generative Adversarial Network ist ein generatives Modell, mit dem es möglich ist, synthetische Daten zu erzeugen. Dieser Algorithmus enthält, wie typische generative Algorithmen, einen Generator, der eine, auf dem Trainingsdatensatz basierende, Verteilung generiert. Neben dem generativem Anteil umfasst es jedoch noch ein diskriminatives Modell. Dieser Diskriminator lernt zu bestimmen, ob Daten aus dem generativen Modell stammen oder reale Daten vorliegen. Während des Lernvorgangs generiert der Generator synthetische Daten, die mit der Zeit immer mehr der Verteilung des zugrundeliegenden Trainingsdatensatzes entsprechen. Der Diskriminator versucht dann, diese korrekt, in reale oder generierte Samples einzuteilen. \cite{lit:Raschka2019}
+\\
+\\
+Zu Beginn des Trainingsvorgangs wird der Generator mit einem Zufallsvektor $z$ initialisiert. Danach werden abwechselnd der Diskriminator und der Generator trainiert bzw. optimiert. Dabei werden die Parameter der einen Komponente stets festgehalten, solange die jeweils andere trainiert wird. Der Diskriminator versucht, die Wahrscheinlichkeit zu maximieren. Der Generator hingegen verfolgt das Ziel, dessen Verlustfunktion zu minimieren. Diese wird wie folgt beschrieben \cite{lit:Goodfellow2014}:
+
+\begin{equation}
+	\min\limits_{G} \, \max\limits_{D} \, V(D,G) = E_{x \sim p_{Data}(x)} \left[\log D(\mathbf{x})\right] + E_{x \sim p_{x}(x)} \left[\log(1 -  D(G(z)))\right]
+	\label{eqn:gan:loss}
+\end{equation}
+
+Der Ausdruck $E_{x \sim p_{Data}(x)}\left[\log D(\mathbf{x})\right]$ stellt den Erwartungswert in Bezug auf die Verteilung des Realdatensatzes dar. $E_{x \sim p_{x}(x)} \left[\log(1 -  D(G(z)))\right]$ bezeichnet hierbei den Erwartungswert, bezogen auf die Verteilung des Inputvektors $z$. \cite{lit:Raschka2019}
+
+\FloatBarrier
+\section{Zeitreihen}
+\label{sec:grundl:time}
+
+Sequenzielle Daten stellen eine geordnete Liste von Ereignissen dar. Diese Art von Daten findet sich in verschiedenen Anwendungsfällen wieder. So kommen in der Biologie oftmals sequenzielle Daten, \zB in der DNA oder in Proteinsequenzen, vor. Auch symbolische Sequenzen, wie die logische Folge eines Kundenkaufs in einem Onlineshop, fallen unter diese Kategorie. Eine weitere wichtige Art von sequenziellen Daten sind Zeitreihen.
+\\
+\\
+Dabei handelt es sich um numerische Daten, zwischen denen, normalerweise, ein festes diskretes Zeitintervall liegt. Zeitreihen finden sich in verschiedensten Anwendungsgebieten. Diese kommen in der Natur, in Form von Temperatur oder Klima, sowie in der Wirtschaft, in Form von Aktienkursen, vor. Die in Fahrzeugen gespeicherten Sensordaten bilden ebenfalls Zeitreihen. Mithilfe der Zeitreihenanalyse lässt sich die Struktur der Zeitreihen verstehen. Es lassen sich Anwendungen in den verschiedenen Bereichen simulieren und vergleichen, sowie Prognosen erstellen. \cite{lit:Kreiss2006}
+\\
+
+\subsection*{\textbf{Taxonomie von Zeitreihen}}
+
+Es gibt verschiedene Arten von Zeitreihen, die sich anhand bestimmter Faktoren, unterscheiden. Im Folgenden werden die wesentlichen Typen von Zeitreihen, auf Basis von \cite{lit:time:tax}, näher beschrieben.
+
+\begin{center}
+	\begin{longtable}[h!]{p{0.5\linewidth}|p{0.5\linewidth}}
+		%\centering
+		%\begin{tabular}{p{0.4\linewidth}|p{0.4\linewidth}}
+			\toprule
+			\textbf{Arten von Zeitreihen} & \textbf{Beschreibung} \\ 
+			\midrule
+			Kontinuierlich und Diskret & Die zugrundeliegenden Daten können von kontinuierlicher Natur sein, wie \zB physikalische Daten, wie die Temperatur. In diesem Fall handelt es sich um kontinuierliche Zeitreihen $x(t)$. Bei diskreten Datenpunkten, die nach bestimmten Intervallen abgerufen werden, \zB jede Sekunde, handelt es sich um diskrete Zeitreihen $x_{t_{i}}$. Kontinuierliche Zeitreihen können durch Abtastung in diskrete umgewandelt werden. \\
+			\midrule
+			Gleichmäßig und Ungleichmäßig Abgetastet &  Bei diskreten Zeitreihen werden die Daten in bestimmten Intervallen erhoben. Wenn dieses Intervall zwischem jeden Datenpunkt gleich ist, so handelt es sich um einen gleichmäßig abgetasteten Datensatz. Bei einem ungleichmäßig abgetasteten Datensatz ist dieses Abtastintervall nicht für alle Zeitpunkte konstant.\\
+			\midrule
+			Univariat und Multivariat & Eine univariate Zeitreihe $x(t)$ oder $x_t$, ist durch eine, nach der Zeit, geordnete endliche Sequenz von $T$ Datenpunkten definiert. Für jeden Zeitpunkt $t_i$ gibt es genau einen Datenpunkt $x_{t_i}$. Eine multivariate Zeitreihe besteht aus $M > 1$ univariaten Zeitreihen. Für jeden Zeitpunkt $t_i$ gibt es also $M$ Datenpunkte $x_{u,t_i}$. Folgend wird also bei univariaten Zeitreihen nur ein Merkmal und bei multivariaten mehrere betrachtet. \\
+			\midrule
+			Periodisch und Aperiodisch & Wenn kein periodisches Verhalten festgestellt werden kann, wird diese als aperiodisch bezeichnet. Falls Datenpunkte periodisches Verhalten aufweisen, handelt es sich um periodische Zeitreihen. Bei vollständig periodischen Zeitreihen zeigen alle Datenpunkte periodisches Verhalten auf. Tritt nur in einer Teilmenge von Datenpunkten periodisches Verhalten auf, wird diese als partiell-periodische Zeitreihe bezeichnet. Ein weiterer Faktor ist die Synchronizität der periodischen Muster. Synchrone Muster treten mit einer fixen Periode auf, wohingegen asynchrone Muster keine feste Periode aufweisen. \\ %Ein weiterer Aspekt der bei der Zeitreihenanalyse betrachtet werden sollte ist die Periodizität der univariaten Zeitreihen. Hier wird die Zeitreihe auf periodisches Verhalten untersucht und in welcher Form dieses auftaucht. 
+			\midrule
+			Stationär und Nicht-stationär & Die statistischen Eigenschaften von stationären Zeitreihen ändern sich nicht über der Zeit. Hierbei wird unter schwacher und starker Stationarität unterschieden. Bei stark stationären Zeitreihen hat die Menge $(x_1, x_2, \ldots, x_n)$, genau dieselben statistischen Eigenschaften, wie die Menge $(x_{1+h}, x_{2+h}, \ldots, x_{n+h})$, für jedes $h > 0$ und $n > 0$. Schwache Stationarität liegt vor, wenn der Erwartungswert und die Kovarianz unabhängig von der Zeit sind. Es muss also gelten $\mu_x(t) = \mu_x$ und $\gamma_x(t + h,t) = cov(x_{t+h},x_t) = E[(x_{t+h} - \mu_{t+h})(x_t - \mu_t)]$, wobei $\gamma_x$ die Autokovarianzfunktion bezeichnet.\\
+			%Zeitreihen werden als Realisierungen von stochastischen Prozessen interpretiert, beispielsweise als eine Reihe von Zufallsvariablen mit jeweils eigenen statistischen Eigenschaften
+			\midrule
+			Kurz und Lang & Die Anzahl der Daten in einer Zeitreihe kann stark variieren. Umso mehr Parameter ein Modell enthält, desto größer sollte die Anzahl an Datenpunkten sein, damit dieses richtig interpretiert werden kann. Die theoretische Mindestanzahl an Beobachtungen ist hierbei gleich der Anzahl an vorhandenen Merkmalen. Um genauere Aussagen treffen zu können, muss allerdings eine passende Anzahl an Daten vorliegen. Bei Short Time Series ist die Anzahl an Daten sehr gering, weswegen Erkenntnisse von verschiedenen Analysemethoden eine geringe Aussagekraft haben. Ein anderes Extrembeispiel ist ein zu großer Datensatz. Umso mehr Daten vorhanden sind, desto höher ist die Diskrepanz zwischen diesen. Dadurch wird die Analyse solcher Zeitreihen komplexer.\\
+			\midrule
+			Ergodisch und Nicht-ergodisch & Bei stationären stochastischen Prozessen stimmt zu jedem beliebigen Zeitpunkt $t$ der Scharmittelwert des Prozesses mit dem Zeitmittelwert jedes Einzelexperimentes überein. Hierdurch können die statistischen Momente, mithilfe der zeitlichen Wiederholung eines einzelnen Zufallsexperiments, bestimmt werden.\\
+			\bottomrule
+		%\end{tabular}
+	\end{longtable}
+	\captionof{table}{Taxonomie von Zeitreihen}
+	\label{tab:grundl:time}
+\end{center}
+
+
+\subsection*{\textbf{Anwendungen}}
+
+Im Folgenden wird der spezielle Fall einer multivariaten Zeitreihe betrachtet. Bezugnehmend auf \autoref{sec:grundl:af} werden in Fahrzeugen verschiedenste Sensordaten, wie Positions-, Geschwindigkeits- und Beschleunigungswerte, gespeichert. Diese Werte werden, im Kontext des Machine Learning, ebenso als Merkmale bezeichnet und können als multivariate Zeitreihe dargestellt werden. Die einzelnen Datenpunkte lassen sich in der Matrixform
+\begin{equation*}
+	\begin{pmatrix}
+		x_{1,t_1} & & x_{1,t_2} & \cdots & x_{1,t_T} \\
+		\vdots & & \ddots & & \vdots \\
+		x_{M,t_1} & & \cdots & & x_{M,t_T}
+	\end{pmatrix}
+\end{equation*}
+darstellen. Eine multivariate Zeitreihe lässt sich für den reellen Raum wie folgt definieren:
+\begin{equation}
+	f : D \in \mathbb{R} \rightarrow Z \in \mathbb{R}^k, t \mapsto Y \in \{Y_{t=t_1}^{k}, Y_{t=t_2}^{k}, \ldots, Y_{t=t_N}^{k}\}, \, \#(t,Y) = N, \,k \in \mathbb{N}^+
+	\label{eqn:time:multi}
+\end{equation}
+Hierbei beschreibt $t$ den Zeitvektor. Die Beobachtungen $Y$ werden für $k$ Merkmale in dem Vektor $Y^k$ zusammengefasst. Des Weiteren bezeichnet $N$ die Anzahl der Datenpunkte der multivariaten Zeitreihe.
+\\
+\\
+In \autoref{img:grundl:time} ist beispielhaft eine Geschwindigkeit $v$ über der Zeit $t$ dargestellt. Für das konstante Geschwindigkeitssignal von $75 \frac{m}{s}$ wurde hierbei ein gaußsches Rauschen mit einer Standardabweichung von $\sigma = 0.01$ angenommen. Dieses Signal ist ein Beispiel für eine stetige univariate Zeitreihe.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics{fig/grundl/time/Time}
+	\caption{Stetige Univariate Zeitreihe}
+	\label{img:grundl:time}
+\end{figure}
+
+\FloatBarrier
+\section{Dichtefunktion}
+\label{sec:grundl:fkt}
+
+Im Alltag gibt es viele Vorgänge, deren Ergebnisse vom Zufall abhängig sind. Bei diesen Prozessen ist es nicht möglich, vorherzusagen, welches Ergebnis eintritt. Man spricht bei solchen Zufallsexperimenten ebenso von nicht deterministischen Prozessen. Ein Beispiel für ein solches Experiment ist das Werfen eines Würfels. Die sogenannte Ergebnismenge ist $\Omega = \{1,2,3,4,5,6\}$ und enthält hierbei alle möglichen Elementarereignisse $\omega_i$, die vorkommen können. Wenn nun ein Zufallsexperiment durchgeführt wird, bei dem ein Würfel zwei mal hintereinander geworfen wird, gibt es eine Menge $\mathbb{D}$, die alle möglichen Resultate für die Augensumme enthält. In diesem Beispiel beinhaltet diese Menge alle Zahlen von $2, \ldots, 12$. Hierbei wird jede mögliche Kombination einer Ergebnismenge $\mathbb{W}$ zugeordnet. \cite{lit:Marchthaler2017}
+\\
+\\
+Diese Abbildung auf eine Menge erfolgt mithilfe einer Funktion, die als Zufallsvariable $X$ bezeichnet wird. Eine Zufallsvariable gilt dann als stetig, wenn sie mindestens in einem bestimmten Intervall, jeden beliebigen reellen Wert annehmen kann. Da ein endliches oder unendliches Intervall von reellen Zahlen nicht abzählbar unendlich viele Werte enthält, ist die Wahrscheinlichkeit, dass eine stetige Zufallsvariable genau einen Wert darin annimmt, gleich null. Dabei wird die Wahrscheinlichkeit, einer bestimmten Realisierung der Zufallsvariablen $X$, durch die Dichtefunktion $f(x)$ bestimmt. Diese stellt die Wahrscheinlichkeitsdichte von $X$ dar. \\Für die Dichtefunktion gilt im Allgemeinen \cite{lit:Puhani2020}:
+\begin{align}
+	&\int\limits_{-\infty}^{+\infty} f(x) \,dx = 1 \quad \wedge \quad f(x) \geq 0; x \in \mathbb{R} 
+	\label{eqn:dichte:def} \\
+	&W(a < X \leq b) = \int\limits_{a}^{b} f(x) \,dx
+	\label{eqn:dichte:prob}
+\end{align}
+
+\subsection*{\textbf{Kennzahlen}}
+
+Mithilfe von Dichtefunktionen können Zufallsexperimente -oder variablen beschrieben werden. Allerdings gibt es noch andere Kennzahlen, die diese charakterisieren. Momente und zentrale Momente eines Zufallsexperimente zählen zu den wichtigsten dieser Kennwerte.
+
+Das allgemeine $i$-te Moment ist durch
+\begin{equation}
+	\alpha_i = E(X^i) = \begin{cases}
+		\int\limits_{-\infty}^{+\infty} x^i \cdot f_X(x) dx & \text{wenn X stetig} \\
+		\sum\limits_{k \in \mathbb{N}} x(k)^i \cdot f_X(x(k)) & \text{wenn X diskret}
+	\end{cases}
+	\label{eqn:dichte:imom}
+\end{equation}
+gegeben \cite{lit:Marchthaler2017}. Für $i = 1$ ergibt sich gemäß \autoref{eqn:dichte:imom} das erste Moment, welches ebenso als Erwartungswert $E(X)$ oder $\mu$ bekannt ist:
+\begin{equation}
+	\alpha_1 = E(X) = \begin{cases}
+		\int\limits_{-\infty}^{+\infty} x \cdot f_X(x) dx & \text{wenn X stetig} \\
+		\sum\limits_{k \in \mathbb{N}} x(k) \cdot f_X(x(k)) & \text{wenn X diskret}
+	\end{cases}
+	\label{eqn:dichte:1mom}
+\end{equation}
+Dieser trifft Aussagen über die Lage bzw. das Zentrum der Zufallsvariablen $X$ und stellt das gewogene arithmetische Mittel dar. In praktischen Anwendungen ist die Dichtefunktion $f_X(x)$ oft nicht bekannt, weswegen der Erwartungswert auch durch den  arithmetischen Mittelwert $\overline{x}$
+\begin{equation}
+	\overline{x} = \frac{1}{n} \cdot \sum\limits_{k=1}^n x(k)
+	\label{eqn:dichte:mit}
+\end{equation}
+angenähert wird. Die zentralen Momente einer Zufallsvariablen $X$ sind definiert durch \cite{lit:Marchthaler2017}:
+\begin{equation}
+	\mu_i = E\left((X - E(X))^i\right) = \begin{cases}
+		\int\limits_{-\infty}^{+\infty} (X - E(X))^i \cdot f_X(x) dx & \text{wenn X stetig} \\
+		\sum_{k \in \mathbb{N}} (x(k) - E(X))^i \cdot f_X(x(k)) & \text{wenn X diskret}
+	\end{cases}
+	\label{eqn:dichte:izmom}
+\end{equation}
+Das zweite zentrale Moment der Zufallsvariablen $X$
+\begin{equation}
+	Var(X) = E\left((X - E(X))^2\right) = \begin{cases}
+		\int\limits_{-\infty}^{+\infty} (X - E(X))^2 \cdot f_X(x) dx & \text{wenn X stetig} \\
+		\sum_{k \in \mathbb{N}} (x(k) - E(X))^2 \cdot f_X(x(k)) & \text{wenn X diskret}
+	\end{cases}
+	\label{eqn:dichte:2zmom}
+\end{equation}
+ergibt sich nach \autoref{eqn:dichte:2zmom} für $i=2$. Sie gibt eine Aussage über die Streuung der Verteilung einer Zufallsvariablen $X$. In diesem Kontext ist die Standardabweichung das lineare Maß der Varianz:
+\begin{equation}
+	\sigma(X) = \sqrt{Var(X)}
+	\label{eqn:dichte:sigma}
+\end{equation}
+Neben den bereits genannten Kenngrößen gibt es ebenso Formparameter, die Aussagen über die Gestalt von theoretischen Verteilungen machen. So gibt der Parameter
+\begin{equation}
+	\gamma_1 = \frac{E((X - \mu)^3)}{\sigma^3}
+	\label{eqn:dichte:skew}
+\end{equation}
+die theoretische Schiefe der Verteilung von $X$ wieder \cite{lit:Mittag2020}. Bei $\gamma_1 = 0$ liegt eine symmetrische, bei $\gamma_1 > 0$ eine rechtsschiefe bzw. linkssteile und bei $\gamma_1 < 0$ eine linksschiefe bzw. rechtssteile Verteilung vor.
+Der weitere Formparameter
+\begin{equation}
+	\gamma_2 = \frac{E((X - \mu)^4)}{\sigma^4}
+	\label{eqn:dichte:kurtosis}
+\end{equation}
+gibt die theoretische Wölbung bzw. Kurtosis wieder \cite{lit:Mittag2020}. Dieser gibt an, wie stark die Flanken einer Verteilung ausgeprägt sind bzw. wie stark die Wahrscheinlichkeitsmasse um den Erwartungswert konzentriert ist.
+
+\subsection*{\textbf{Normalverteilung}}
+
+Eine der wohl bekanntesten Dichtefunktionen ist die nach Carl Friedrich Gauß benannte Gaußsche Normalverteilung. Sie ist definiert durch
+\begin{equation}
+	f(x) = \frac{1}{\sigma \, \sqrt{2 \, \pi}} \cdot e^{- \frac{(x - \mu)^2}{2\,\sigma^2}}
+	\label{eqn:dichte:gauss}
+\end{equation}
+mit $\mu$ als den Erwartungswert und $\sigma$ als die Standardabweichung. In \autoref{img:grundl:dichte} ist diese, für $\mu = 0$ und $\sigma = 1$, dargestellt (Standardnormalverteilung).
+
+\begin{figure}
+	\centering
+	\includegraphics{fig/grundl/dichte/Dichte}
+	\caption{Gaußsche Standardnormalverteilung}
+	\label{img:grundl:dichte}
+\end{figure}
+
+\FloatBarrier
+\subsection*{\textbf{Kerndichteschätzer}}
+
+In der Praxis, wie beispielsweise bei realen Messdaten, ist die Dichtefunktion, der zugrundeliegenden Zufallsvariablen, typischerweise unbekannt. Demnach ist es wichtig, je nach Anwendungsfall, diese nicht nur qualitativ, sondern ebenso quantitativ gut abzuschätzen. In diesem Kontext können sogenannte Kerndichteschätzer (\textit{engl. Kernel Density Estimator, KDE}) eingesetzt werden. Solche Kerndichteschätzer sind wie folgt definiert:
+
+\begin{align}
+	\tilde{f}_n(t) = \frac{1}{n h} \, \sum_{j=1}^n \, k \, \frac{(t-x_j)}{h}
+	\label{eqn:dichte:kde}
+\end{align}
+
+Dabei stellt $\tilde{f}_n$ die Approximation der echten Dichtefunktion dar. Die Stichprobe ist hierbei gegeben mit $x_1, \ldots, x_n$ und der Stichprobenumfang mit $n$. Darüber hinaus ist die Güte des Kerndichteschätzers stark abhängig von der Bandbreite $h$. Eine zu klein gewählte Bandbreite bewirkt ein Overfittung der Dichtefunktion, wohingehend eine zu große Bandbreite entsprechend zum Underfitting führt. Gemäß dem Satz von Nadaraya existiert eine Bandbreite, so dass die approximierte Dichtefunktion gegen die echte Dichtefunktion konvergiert. Des Weiteren beinhaltet ein Kerndichteschätzer einen sogenannten Kernel $k$ bzw. ein Wahrscheinlichkeitsmaß. Hierbei können verschiedene Kernarten verwendet werden. Der sogenannte Gaußkern (\textit{engl. Gaussian}) ist dabei wie folgt definiert:
+
+\begin{align}
+	k(t) = \frac{1}{\sqrt{2 \pi}} \, \exp{\left(-\frac{1}{2}t^2\right)}
+	\label{eqn:dichte:kdegaus}
+\end{align}
+
+Sowohl die Bandbreite als auch der Kernel können mittels Optimierverfahren bestimmt werden. Dadurch wird die Berechnung der Kerndichteschätzer jedoch noch zeitaufwändiger. Je nach Genauigkeitsanforderungen und Rechenzeitaufwand können alternative Ansätze herangezogen werden, um die Wahrscheinlichkeitsdichtefunktion abzuschätzen. Beispielsweise mittels einer sogenannten Histogramm-Spline-Approximation. Hierbei wird eine Spline durch das Histogramm, der zugrundeliegenden Daten, gelegt. Eine solche Approximation erfüllt ebenso die wesentlichen Eigenschaften einer  Wahrscheinlichkeitsdichtefunktion. Die Histogramm-Spline-Approximation ist insbesondere vom Grad der Spline und der Anzahl der Bins des Histogrammes abhängig. \cite{lit:Schick2021}
+
+\section{Evaluierungstechniken von generativen Algorithmen}
+\label{sec:grundl:eval}
+
+Gemäß \autoref{sec:grundl:gan} lassen sich synthetische Daten mithilfe von generativen Algorithmen erzeugen. Grundsätzlich können diese generierten Daten mit dem Ausgangsdatensatz, auf visueller bzw. qualitativer Ebene, verglichen werden. Ein quantitativer Ansatz ist hingegen der Vergleich der beiden Wahrscheinlichkeitsdichtefunktionen. Hierzu gibt es eine Vielzahl verschiedenster Evaluierungstechniken. Darunter fällt die statistische Distanz zweier Dichtefunktionen. Im Folgenden wird dieser Begriff, auf Basis der Arbeit von M. Deza und E. Deza \cite{lit:Deza2013}, näher erläutert.
+\\
+\\
+Eine Distanz (\textit{engl. Distance oder Dissimilarity}) $d(x,y)$ ist eine Funktion, die eine Menge $X$ auf den reellen Raum abbildet, \dah $d : \, X \times X \rightarrow \mathbb{R}$. Hierbei werden $x,y \in X$ durch $d$ auf den reellen Raum abgebildet. Diese besitzt folgende Eigenschaften:
+\begin{align*}
+	d(x,y) &\geq 0 \qquad & (Nicht-Negativität) \\
+	d(x,y) &= d(y,x) \qquad & (Symmetrie) \\
+	d(x,x) &= 0 \qquad & (Reflexivität) \\
+\end{align*}
+Eine weitere Art, die Diskrepanz zweier Dichtefunktionen zu bestimmen, ist die Ähnlichkeit (\textit{engl. Similarity}). Ähnlich wie eine Distanz, bildet diese eine Menge auf den reellen Raum ab, \dah $s : \, X \times X \rightarrow \mathbb{R}$. Neben den Eigenschaften Nicht-Negativität und Symmetrie, muss für eine Similarity gelten $s(x,y) \leq s(x,x)$ für alle $x,y \in X$, außer für $y=x$. Similarities $s$ und Distances $d$ können durch verschiedene Transformationen ineinander umgeformt werden. Beispielsweise durch: $d = 1 - s$, $d = \frac{1 - s}{s}$, $d = \sqrt{1 - s}$ oder $d = -\ln(s)$ \cite{lit:Deza2013}. Umso ähnlicher sich $x$ und $y$ sind, desto höher ist der Wert einer Similarity $s$. Im Gegensatz ist eine Distanz $d$ umso geringer, desto ähnlicher sich $x$ und $y$ sind. In beiden Fällen können die dazugehörigen Kennzahlen normalisiert werden. Dann gilt $0 \leq s(x,y) \leq 1$ bzw. $0 \leq d(x,y) \leq 1$.
+\newpage
+Die Definition einer Distanz kann in eine Semi-Metrik erweitert werden. Hierzu muss, zusätzlich zur Nicht-Negativität, Symmetrie und Reflexivität, für alle $x,y,z \in X$ gelten:
+\begin{align*}
+	d(x,y) &\leq d(x,z) + d(z,y) \qquad & (Dreiecksungleichung)
+\end{align*}
+Eine Metrik erweitert die Semi-Metriken zusätzlich um die Identität (\textit{engl. identity}):
+\begin{align*}
+	d(x,y) &\geq 0 \qquad & (Nicht-Negativität) \\
+	d(x,y) &= 0 \Leftrightarrow x=y \qquad & (Identität) \\
+	d(x,y) &= d(y,x) \qquad & (Symmetrie) \\
+	d(x,y) &\leq d(x,z) + d(z,y) \qquad & (Dreiecksungleichung)
+\end{align*}
+Eine Menge $X$, inkl. einer Metrik $d$, wird als metrischer Raum $(X,d)$ bezeichnet. Diese Evaluierungstechniken bilden den Rahmen, um Dichtefunktionen, im Kontext von generativen Algorithmen, miteinander zu vergleichen. Distanzen, die asymmetrisch sind, können in symmetrische transformiert werden. In \autoref{tab:grundl:eval} befinden sich einige dieser Transformationen \cite{lit:Cha2007}. 
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{p{0.4\linewidth}|p{0.55\linewidth}}
+		\toprule
+		\textbf{Methode} & \textbf{Beschreibung} \\ 
+		\midrule
+		Addition & $d_{sym}(\mathbb{P},\mathbb{Q}) = d_{asym}(\mathbb{P},\mathbb{Q}) + d_{asym}(\mathbb{Q},\mathbb{P})$ \\
+		\midrule
+		Maximum  & $d_{max-sym}(\mathbb{P},\mathbb{Q}) = \max\left(d_{asym}(\mathbb{P},\mathbb{Q}),d_{asym}(\mathbb{Q},\mathbb{P})\right)$ \\
+		\midrule
+		Minimum   & $d_{min-sym}(\mathbb{P},\mathbb{Q}) = \min\left(d_{asym}(\mathbb{P},\mathbb{Q}),d_{asym}(\mathbb{Q},\mathbb{P})\right)$ \\
+		\midrule
+		Durchschnitt & $d_{avg-sym}(\mathbb{P},\mathbb{Q}) = avg\left(d_{asym}(\mathbb{P},\mathbb{Q}),d_{asym}(\mathbb{Q},\mathbb{P})\right)$ \\
+		\bottomrule
+	\end{tabular}
+	\caption{Techniken zur Symmetrisierung einer Distanz}
+	\label{tab:grundl:eval}
+\end{table}

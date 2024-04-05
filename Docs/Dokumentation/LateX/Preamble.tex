@@ -1,0 +1,192 @@
+\documentclass[12pt,BCOR5mm,a4paper]{article}
+
+% % ToDo kennzeichnen
+\newcommand{\workTodo}[1]{\textcolor{red}{todo: #1}}
+
+\newcommand{\workDatum}{\today\xspace}
+
+\usepackage{fancyhdr}
+% Kopf- unf Fußzeile:
+\pagestyle{fancy}
+% Layout:
+\setlength{\topmargin}{-20mm}										% Abstand Seitenkopf vom Rand (0mm entspricht einem Abstand von 25.4mm)
+\setlength{\headheight}{15mm}										% Höhe Seitenkopfs
+%\fancyheadoffset[L]{\marginparwidth}
+\fancyhfoffset[LE]{6mm}
+\setlength{\headsep}{15mm}											% Abstand Seitenkopf vom Seitenrumpf
+\setlength{\textheight}{240mm}									% Höhe Seitenrumpf 
+\setlength{\footskip}{10mm}											% Abstand unteres Ende Seitenfuss zum unteren Ende Seitenrumpf 
+\setlength{\oddsidemargin}{-9.4mm}							% Abstand ungerade Seitenzahlen vom Seitenrand 
+% (0mm entspricht einem Abstand vom Rand von 25.4mm)
+\setlength{\evensidemargin}{-9.4mm} 						% Abstand ungerade Seitenzahlen vom Seitenrand
+% (0mm entspricht einem Abstand vom Rand von 25.4mm)
+\setlength{\textwidth}{184mm} 									% Breite Seitenrumpf 
+% Erstzeileneinzug:
+\setlength{\parindent}{0.0em} 
+% Abstand zwischen zwei Absätzen:
+\setlength{\parskip}{6pt plus2pt minus2pt} 			% Setzt den vertikalen Abstand zwischen Absätzen auf 6 pt
+% Das Plus und Minus fügt Glue ein, d. h. TeX darf den Abstand um 4 Punkte
+% vergrößern oder verkleinern, um ein gutes Layout zu erzeugen 
+% (z. B. bündiger Abschluss der Seite)
+% Seitenlayout auf eigene Kopf- und Kopfzeilen ändern
+%\fancyhf{}													  					% Kopf- und Fußzeile löschen
+\fancyhead[L]{\leftmark}
+\renewcommand{\headrulewidth}{0.1pt}						% Srichstärke der Line unterhalb der Kopfzeile
+\renewcommand{\footrulewidth}{0pt}						% Srichstärke der Line oberhalb der Fußzeile
+\rhead{\includegraphics[width=4cm]{fig/HE_Logo.pdf}}% Logo in der Kofzeile rechts platzieren
+%\cfoot{\footnotesize{\thepage}}             % Seitenzahl in der Fußzeile mittig platzieren
+%%
+%%% neu Defintion von Kopf- und Fu0zeilen einer leeren Seite (Titelseite, Inhaltsverzeichnis, etc.)
+%\fancypagestyle{plain}{
+%	\fancyhf{}
+%	\fancyhead[C]{} 											% alles ausblenden
+%	\renewcommand{\headrulewidth}{0.0pt} % Line unterhalb der Kopfzeile ausblenden
+%	\renewcommand{\footrulewidth}{0.0pt}	% Srichstärke der Line oberhalb der Fußzeile
+%	\cfoot{\footnotesize{}}             % Seitenzahl in der Fußzeile mittig platzieren
+%}
+
+% language settings
+\usepackage[latin1]{inputenx}
+\usepackage[ngerman]{babel}
+%\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{lmodern}
+% wegen deutschen Umlauten
+%\usepackage[utf8]{inputenc}
+\usepackage[babel,german=quotes]{csquotes}
+
+% grafik package
+\usepackage{graphicx}
+
+% pdf
+\usepackage{pdfpages}
+
+% math
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% zitieren
+\usepackage{cite}
+
+% url
+\usepackage{url}
+
+% bibliographie mit natbib
+\usepackage[numbers]{natbib}
+
+% code
+%\usepackage{listings}
+\usepackage{xcolor}
+% matlab code
+\usepackage{matlab-prettifier}
+\usepackage{filecontents}
+
+% hyperref
+\usepackage[hidelinks]{hyperref}
+
+% stichwortverzeichnis
+\makeindex
+
+% figures
+\usepackage{float}
+\usepackage{placeins}
+
+% wrap figures
+\usepackage{wrapfig}
+
+% multi page
+\usepackage{booktabs}
+\usepackage{tabularx} % tabularx nach hyperref laden
+\usepackage{longtable}
+
+% table width
+\usepackage{array}
+% multirow
+\usepackage{multirow}
+
+% caption
+\usepackage{caption}
+\usepackage{subcaption}
+
+%\floatstyle{boxed} 
+%\restylefloat{figure}
+
+%acronyms
+\usepackage{acronym}
+
+% bibliographystyle
+\bibliographystyle{plainnat}
+
+% table caption
+%\usepackage{caption}
+%\captionsetup[table]{position=bottom}
+
+% new commands
+% underscore
+\newcommand{\TextUnderscore}{\rule{.5em}{.4pt}}
+% rename code listings -> Code Example in autoref
+%\renewcommand{\lstlistingname}{Code Beispiel}% Listing -> Code Example
+
+% rename figure -> Abbildung in autoref
+\addto\extrasngerman{\def\figureautorefname{Abbildung}}
+% table name
+\addto{\captionsngerman}{%
+	\renewcommand*{\tablename}{Tabelle}
+}
+% change row height of tables
+\renewcommand{\arraystretch}{1.4}
+% right align in longtable
+%\def\equationautorefname#1#2\null{Gl.#1(#2\null)}
+%\def\equationautorefname~#1\null{Gleichung~(#1)\null}
+\addto\extrasngerman{\def\equationautorefname~#1\null{Gl.~(#1)\null}}
+\addto\extrasngerman{\def\theoremautorefname~#1\null{Gl.~(#1)\null}}
+\addto\extrasngerman{\def\AMSnameautorefname~#1\null{Gl.~(#1)\null}}
+
+% ---- Abkuerzungen
+\newcommand{\zB}{\mbox{z.\,B.}\xspace}
+\newcommand{\ua}{\mbox{u.\,a.}\xspace}
+\newcommand{\dah}{\mbox{d.\,h.}\xspace}
+\newcommand{\Dah}{\mbox{D.\,h.}\xspace}
+\newcommand{\uAe}{\mbox{u.\,�.}\xspace}
+
+\newcolumntype{R}{>{\raggedleft\arraybackslash}p{0.65\linewidth}}
+% pagestyle
+%\pagestyle{option}
+
+\newcommand{\RN}[1]{\uppercase\expandafter{\romannumeral#1}}
+
+\definecolor{lightgray}{rgb}{.9,.9,.9}
+\definecolor{darkgray}{rgb}{.4,.4,.4}
+\definecolor{purple}{rgb}{0.65, 0.12, 0.82}
+
+\lstdefinelanguage{JavaScript}{
+	keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
+	keywordstyle=\color{blue}\bfseries,
+	ndkeywords={class, export, boolean, throw, implements, import, this},
+	ndkeywordstyle=\color{darkgray}\bfseries,
+	identifierstyle=\color{black},
+	sensitive=false,
+	comment=[l]{//},
+	morecomment=[s]{/*}{*/},
+	commentstyle=\color{purple}\ttfamily,
+	stringstyle=\color{red}\ttfamily,
+	morestring=[b]',
+	morestring=[b]"
+}
+
+\lstset{
+	language=JavaScript,
+	backgroundcolor=\color{lightgray},
+	extendedchars=true,
+	basicstyle=\footnotesize\ttfamily,
+	showstringspaces=false,
+	showspaces=false,
+	numbers=left,
+	numberstyle=\footnotesize,
+	numbersep=9pt,
+	tabsize=2,
+	breaklines=true,
+	showtabs=false,
+	captionpos=b
+}
+%%% --------------------------------------------

@@ -1,0 +1,299 @@
+body{    
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    
+    background-color: white;
+}
+
+nav{
+    font-size: x-large;
+    color: black;
+    height: 5em;
+}
+
+.pure-menu-item{
+    color: black;
+}
+
+p{
+    margin: 1em;
+}
+
+
+.banner{
+    background: transparent url('./Bilder/csm_Corona-Virus-im-Inneren-des-Koerpers-Wuhan-Virus-peterschreiber.media-AdobeStock-318040586-Abo-2434x1310_5d0340d468.jpg') 0 0 no-repeat fixed;
+    text-align: center;
+    background-size: cover;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='./Bilder/csm_Corona-Virus-im-Inneren-des-Koerpers-Wuhan-Virus-peterschreiber.media-AdobeStock-318040586-Abo-2434x1310_5d0340d468.jpg', sizingMet);
+    color: white;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    text-shadow: 0 0 5px black;
+    font-size: 25px;
+    height: 200px;
+    width: 100%;
+    margin-bottom: 3em;
+    display: table;
+}
+
+.l-content{
+    margin: 0 auto;
+}
+
+.table-header{
+    background-color: #ADD2C2;
+    color: #fff;
+} 
+.table-header h2{
+    margin: 0;
+    padding-top: 2em;
+    font-size: 3em;
+    font-weight: normal;
+    color: black;
+} 
+
+
+.table-data{
+    font-size: 3em;
+    margin: 0.2em 0 0;
+    font-weight: 100;
+    color: black;
+}
+
+.scale{
+	-webkit-transform: scale(1);
+	-moz-transform: scale(1);
+	-ms-transform: scale(1);
+	-o-transform: scale(1);
+	transform: scale(1);
+}
+*.scale:hover{
+	-webkit-transform: scale(1.2);
+	-moz-transform: scale(1.2);
+	-ms-transform: scale(1.2);
+	-o-transform: scale(1.2);
+	transform: scale(1.2);
+}
+.table-data span{
+    display: block;
+    text-transform: uppercase;
+    font-size: 0.5em;
+    padding-bottom: 2em;
+    font-weight: 100;
+    color: rgba(255, 255, 255, 0.5);
+    *color: #fff;
+    color: black;
+} 
+
+.data-table{
+    margin: auto;
+    width: 90%;
+    padding: 10px;
+    text-align: center;
+    font-size: large;
+    border-style: solid;
+    max-width: 400px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.data-table-list li {
+    padding: 0.8em 0;
+    background: #f7f7f7;
+    border-bottom: 1px solid #e7e7e7;
+}
+
+
+.data-table-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+form{
+    margin-top: 2em;
+    margin-left: 33vw;
+    margin-bottom: 2em;
+    margin-right: 10px;
+}
+
+.footer{
+    text-align: center;
+    font-size: medium;
+    margin-bottom: 3em;
+}
+
+#Uberschrift{
+    font-family: "Trirong", serif;
+    font-size: 50px;
+    background-color: #FAFAFA;
+    text-align: center;
+}
+
+.AllCountriesH1{
+    margin-left: 2em;
+}
+
+.navItemSelected{
+    background-color: rgba(0,0,255,0.3) ;
+    border-radius: 20px;
+}
+
+.countryDiv{
+    color: white;
+    font-size: x-large;
+    background: url('./Bilder/Corona_Single.jpg');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    text-align: center;
+    border-style: solid;
+    height: 250px;
+    border-radius: 10px;
+    margin-bottom: 5em;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.countryDiv button {
+ margin: 0;
+}
+
+
+/* ------------------------------------- Accordion Style Anfang ----------------------------------------------- */
+
+
+.accordion{
+    max-width: 800px;
+}
+
+.accordion .contextBox {
+    position: relative;
+    margin: 10px 20 px;
+}
+
+.accordion .contextBox .label{
+    position: relative;
+    padding: 10px;
+    background: #2694af;
+    color: #fff;
+    cursor: pointer;
+}
+
+.accordion .contextBox .label::before{
+    content: '\25be' ;
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    font-size: 1.5em;
+}
+
+.accordion .contextBox.active .label::before{
+    content: '\25b4';
+}
+
+.accordion .contextBox .content{
+    position: relative;
+    background: #fff;
+    height: 0;
+    overflow: hidden;
+    transition: 0.5s;
+    overflow-y: auto;
+}
+
+.accordion .contextBox.active .content{
+    height: 150px;
+    padding: 10px;
+}
+
+
+/* ------------------------------------- Accordion Style Ende ----------------------------------------------- */
+
+@media(min-width: 1200px) {
+
+    .data-table{
+        width: 50%;
+    }
+
+    .banner-head {
+        font-size: 4em;
+        
+    }
+    .pricing-table {
+        margin-bottom: 0;
+    }
+
+    .limiter{
+        width: 1200px;
+        margin: auto;
+    }
+    .countryDiv{
+        margin-left: 100px;
+    }
+
+}
+
+
+@media (min-width: 780px) {
+    .banner {
+        height: 200px;
+        margin-bottom: 1em;
+    }
+
+    form{
+        margin-left: 20vw;
+    }
+    .countryDiv{
+        margin-left: 100px;
+    }
+}
+
+@keyframes fade-in {
+	from {opacity: 0;}
+	to {opacity: 1;}
+}
+
+@keyframes fade-out {
+	from {opacity: 1;}
+	to {opacity: 0;}
+}
+
+.modal {
+    color: black;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(255,255,255,0.75);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transition: opacity 0.5s;
+	animation: fade-in 0.5s;
+}
+.modal.hide {
+	animation: fade-out 0.5s;
+}
+
+.modal-box {
+	text-align: center;
+	padding: 1em;
+	background-color: #FFF;
+	box-shadow: 0.5em 0.5em 2em #999;
+	border: #CCC 1px solid;
+}
+
+.modal-content {
+	margin-bottom: 1em;
+}
+
+.modalP{
+    border: 2px solid black;
+    background-color: lightgray;
+    border-radius: 5px;
+}
+
+.modal-buttons button {
+	margin: 0 1em;
+}

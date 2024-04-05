@@ -1,0 +1,743 @@
+
+\chapter{Hauptteil}
+\label{sec:real}
+Dieses Kapitel beschreibt den Hauptteil der zugrundeliegenden Arbeit. Hierbei werden, in einem ersten Schritt, der Anwendungsfall sowie die genaue Herangehensweise, bei der umfangreichen Literaturrecherche, näher erläutert. Anschließend wird eine neuartige Taxonomie der Evaluierungstechniken von Wahrscheinlichkeitsdichtefunktionen vorgestellt, die zur Validierung von generativen Algorithmen, im Kontext der Bereitstellung von zeitreihen-bezogenen Daten, verwendet werden können. Weiterhin wird jede einzelne Evaluierungstechnik in der engeren Auswahl näher beschrieben. Daraufhin werden definierte Bewertungskriterien für eine Gegenüberstellung der Methoden vorgestellt. Abschließend erfolgt die Implementierung und Validierung einer ausgewählten Evaluierungstechnik anhand von synthetisch erzeugten Beispieldatensätzen.
+
+\section{Anwendungsfall}
+\label{sec:haupt:anwendung}
+
+Wie in \autoref{sec:grundl:af} bereits beschrieben wurde, müssen autonome Fahrzeuge mit jeder Situation im Straßenverkehr umgehen können. Darunter fallen ebenso fahrkritische Szenarien, wie Überhol- oder Abbiegevorgänge. In \autoref{img:haupt:ueberhol} ist ein solcher Überholvorgang beispielhaft dargestellt.
+
+\begin{figure}
+	\centering
+	\includegraphics{fig/haupt/Ueberholvorgang}
+	\caption{Überholvorgang}
+	\label{img:haupt:ueberhol}
+\end{figure}
+
+Hierbei sind im Koordinatensystem die Bewegungsdaten der Fahrzeuge, für die Längs- und Querrichtung, dargestellt. Der Positionsverlauf des überholten Fahrzeugs ist in blau aufgezeigt. Die rote Kurve stellt den Verlauf des überholenden Fahrzeugs dar. Der gesamte Überholvorgang erstreckt sich über eine Strecke von 110 m in Längs- sowie 3 m in Querrichtung. Die roten Datenpunkte, auf der Kurve des überholenden Fahrzeugs, zeigen die einzelnen Zeitstempel. Hierbei ist anzumerken, dass die Anzahl der Datenpunkte, für den Ein- und Ausschervorgang, geringer ist, als für den restlichen Verlauf. Dies liegt daran, dass die zurückgelegte Strecke in Querrichtung, für diese Verläufe, geringer ist, als für den eigentlichen Überholvorgang. In der Vergrößerung sind generierte synthetische Positionsverläufe aufgezeigt. Diese befinden sich innerhalb eines physikalisch plausiblen Wertebereich.
+\\
+\\
+Um die Algorithmen von autonomen Fahrzeugen, für diese Fälle, trainieren zu können, müssen Daten, für diese, vorhanden sein. In der Realität sind etwaige Realdaten bzw. Messungen kaum vorhanden. Gründe hierfür sind das geringe Auftreten solcher Szenarien oder die seltene Aufnahme dieser, aufgrund der zugrundeliegenden Kritikalität. Eine Abhilfe kann hier die Verwendung von generativen Algorithmen sein, die synthetische Daten generieren können. Durch die Verwendung dieser synthetischen Daten, ist es möglich, autonome Fahrzeuge, für diese fahrkritischen Szenarien, zu trainieren.
+%Motivation aufgreifen/wiederholen: geringe Daten für fahrkritische Szenarien in der Realität --> synthetische Daten mithilfe von generativen Algorithmen
+\\
+\\
+Die Daten in Kraftfahrzeugen, die in solchen fahrkritischen Szenarien anfallen, sind zumeist Sensordaten. Diese werden \zB in Bewegungsvektoren zusammengefasst und enthalten Daten u.a. über die Zeit, Geschwindigkeit, Beschleunigung und Position in x- und y-Richtung. Gemäß der Unterscheidung in \autoref{sec:grundl:time}, bilden diese Art von Daten periodische, multivariate Zeitreihen. Im zugrundeliegenden Anwendungsfall haben diese Bewegungsvektoren ebenso die gleiche Länge. Einerseits gehen Informationen verloren, falls etwaige  Datenpunkte entfernt werden. Andererseits können fehlende Datenpunkte, nicht für jeden Fall, kinematisch korrekt nachgebildet werden.
+%Anwendungsfall beschreiben: Daten sind periodische, multivariate Zeitreihen (Sensordaten) --> Bewegungsvektoren (Zeit, Position in x, y, Geschwindigkeit, Beschleunigung) mit gleicher Länge --> nicht Zeitreihen schneiden und nicht hinzufügen mit 0, man ist nicht mehr kinematisch
+\\
+\\
+In generativen Algorithmen werden, wie in \autoref{sec:grundl:gan} beschrieben, Dichtefunktionen verwendet, um Datensätze abzubilden und zu generieren. Es liegen jeweils 100 Datensätze zu ausgewählten Szenarien vor. Darunter zählen entsprechende Bewegungsvektoren inkl. Dichtewerte zur Sinusfunktion und zum Überholmanöver mit Gegenverkehr. Die in den Datensätzen befindlichen Dichtefunktionswerte sollen miteinander verglichen werden. Dazu soll eine entsprechende Evaluierungstechnik verwendet werden. Dadurch kann eine Kennzahl bzw. ein Maß ermittelt werden, welche die Übereinstimmung der Dichtefunktionen darstellt. Mithilfe einer solchen Kennzahl ist es möglich, zu entscheiden, ob die synthetisch erzeugten Daten, tatsächlich fahrkritische Szenarien abbilden.
+%Zwei Dichtefunktionen für jedes fahrkritisches Szenario --> für 100 Samples eine Dichtefunktion --> Realdaten pdf vergleichen mit GAN pdf , Input sind 4 Parameter --> 2 Vektoren je pdf mit jeweils x,y
+%Eine Kennzahl rausfinden mithilfe von Evaluierungstechnik: damit Threshold definieren, um nicht synthetisch fahrkritische Szenarien auszusortieren, muss nicht normiert sein auf [ 1,1] oder [0,1]
+
+\section{Vorgehensweise}
+\label{sec:haupt:vorgehen}
+
+Dichtefunktionen können auf verschiedenste Arten und Weisen bewertet, evaluiert oder validiert werden. In diesem Kontext existieren eine Vielzahl an Publikationen. Deshalb erfolgte eine systematische Vorgehensweise, um die relevanten Publikationen zu finden. Hierzu wurden spezielle Suchstrings erstellt, die relevante Stichwörter enthalten. Dabei erfolgten ebenso Permutationen der einzelnen Stichwörter, um ein größeres Spektrum an Suchergebnissen zu erhalten. \newpage Die Suchstrings wurden anschließend in Gruppen eingeteilt und dienten als Basis für die Literaturrecherche. Insgesamt erfolgte die beschriebene Literaturrecherche ausschließlich über Suchmaschinen im Internet. 
+\\
+\\
+Um die Relevanz der gefundenen Publikationen einzustufen, wurde in einem ersten Schritt, die jeweiligen Einleitungs- und Zusammenfassungs-Kapitel gelesen. Diese geben einen guten Überblick über die zugrundeliegenden Publikationen. Entsprechende Evaluierungstechniken, die in den Publikationen genannt und beschrieben werden, wurden extrahiert und in einer Liste gesammelt. In einem weiteren Schritt wurden die Publikationen näher betrachtet. Dadurch sind, die für den Anwendungsfall irrelevanten Evaluierungstechniken, weiter ausgefiltert worden. Im nächsten Schritt erfolgte eine Gruppierung von ähnlichen Evaluierungstechniken. Damit konnte eine eigene Taxonomie an Evaluierungstechniken, für den zugrundeliegenden Anwendungsfall, erstellt werden. Diese werden später, anhand von festgelegten Bewertungskriterien, evaluiert.
+
+\section{Taxonomie der Evaluierungstechniken von Wahrscheinlichkeitsdichtefunktionen}
+\label{sec:haupt:taxonomie}
+
+Durch die Literaturrecherche ergab sich eine umfangreiche Liste an möglichen Evaluierungstechniken. Diese wurden in bestimmte Teilbereiche zusammengefasst, um eine Taxonomie zu bilden. Die zugrundeliegende mathematische Beschreibung dieser Evaluierungstechniken, war die Basis für diese Unterteilung. In \autoref{img:haupt:taxonomie} ist diese Taxonomie dargestellt.
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\linewidth]{fig/haupt/tax/taxonomie}
+	\caption{Taxonomie von Evaluierungstechniken in Bezug auf Dichtefunktions-Vergleiche}
+	\label{img:haupt:taxonomie}
+\end{figure}
+\\
+\\
+Eine essenzielle Gruppe an Evaluierungstechniken bilden die Integral Probability Metrics. Die grundlegende Struktur dieser Metriken bildet die Differenz zweier Wahrscheinlichkeitsmaße $\mathbb{P}$ und $\mathbb{Q}$. Sie sind wie folgt definiert \cite{lit:Gardner2018}:
+\begin{equation}
+	\gamma_F(\mathbb{P},\mathbb{Q}) := \sup\limits_{f \in \mathcal{F}}\left| \int f \,d\mathbb{P} - \int f \,d\mathbb{Q}\right|
+	\label{eqn:tax:ipm} 
+\end{equation}
+Hierbei ist die Funktion $f$ einer Klasse von reellen und beschränkten Funktionen $\mathcal{F}$ zugehörig.
+\\
+\\
+Eine weitere wichtige Gruppe an Evaluierungstechniken bilden informationstheoretische Maße. Eine essenzielle historische Kennzahl, in diesem Bereich, ist die Entropie. Diese ist ein Maß über den Informationsgehalt bzw. die Unsicherheit einer Zufallsvariablen $X$. Sie ist wie folgt definiert \cite{lit:entropy:Csiszar2008}:
+\begin{equation}
+	H(X) = -\sum\limits_{i = 1}^N x_i \cdot \log_2(x_i),\ i=1,\ldots,N
+	\label{eqn:tax:entropie}
+\end{equation}
+Viele statistische Distanzen basieren auf der Entropie. Ein ebenfalls bedeutendes Mittel zum Vergleich von Dichtefunktionen sind Divergenzen bzw. Divergenzmaße (\textit{engl. Divergences}). Hierbei ist anzumerken, dass viele der Evaluierungstechniken, wie \zB Divergenzen, keine Metriken, wie in \autoref{sec:grundl:eval} definiert, darstellen. Das schließt sie jedoch nicht als passendes Evaluierungsmittel aus. Die hohe Anzahl an Nennungen in Literaturen rechtfertigt die Relevanz dieser Evaluierungstechniken für den zugrundeliegenden Anwendungsfall.
+\\
+\\
+Eine der wohl bekanntesten Familie an Divergenzmaßen ist die $f$-Divergence. Diese beinhaltet eine hohe Anzahl an bekannten statistischen Distanzen. Sie ist definiert durch:
+\begin{equation}
+	d_f(p,q) = \sum\limits_{x} q(x)f\left(\frac{p(x)}{q(x)}\right)
+	\label{eqn:tax:fdiv}
+\end{equation}
+Hierbei ist $f$ eine beliebige Funktion, die konvex über dem Definitionsbereich $(0,\infty)$ ist und für die gilt $f(1) = 0$. Des Weiteren sind $f$-divergences stets nicht-negativ und nur dann null, wenn die zwei Dichtefunktionen $p(x)$ und $q(x)$ übereinstimmen \cite{lit:fdiv:Cichocki2010}. 
+\\
+\\
+Eine weitere wichtige Gruppe von Evaluierungstechniken sind die Bregman-Divergenzen. Diese messen die Diskrepanz zwischen zwei Werten von Dichtefunktionen $p(x)$ und $q(x)$ \cite{lit:fdiv:Cichocki2010}:
+\begin{equation}
+	d_\varphi(p,q) = \varphi(p) - \varphi(q) - (p - q)\varphi'(q)
+	\label{eqn:tax:bregman}
+\end{equation}
+Die gesamte Diskrepanz zwischen den Dichtefunktionen $p(x)$ und $q(x)$, lässt sich, mit Hilfe der Bregman-Divergenz, wie folgt beschreiben:
+\begin{equation}
+	d_\varphi(\mathbb{P},\mathbb{Q}) = \int\left[\varphi(p(x)) - \varphi(q(x)) - (p(x) - q(x))\varphi'(q(x))\right] \,dx
+	\label{eqn:tax:bregmancont}
+\end{equation}
+\autoref{eqn:tax:bregmancont} lässt sich, wie in folgender Rechenvorschrift, diskretisieren:
+\begin{equation}
+	d_\varphi(\mathbb{P},\mathbb{Q}) = \sum\limits_{i = 1}^N\left[\varphi(p_i) - \varphi(q_i) - (p_i - q_i)\varphi'(q_i)\right]
+	\label{eqn:tax:bregmandiskret}
+\end{equation}
+Hierbei muss die Funktion $\varphi(t)$ streng konvex und reell sein. $\varphi'(\mathbb{Q})$ beschreibt die Ableitung nach $\mathbb{Q}$. Bregman-Divergenzen besitzen ebenso die Eigenschaft der Nicht-Negativität (vgl. \autoref{sec:grundl:eval}). Die Symmetrie ist abhängig von $\varphi(t)$. 
+\\
+\\
+Mithilfe von sogenannten Similarity Coefficients können ebenso zwei Dichtefunktionen, in Bezug auf ihrer Ähnlichkeit, miteinander verglichen werden. Hierbei werden die beiden Dichtefunktionen bzw. Datensätze $\mathbb{P}$ und $\mathbb{Q}$, mittels unterschiedlichen Operationen, gegenübergestellt. Zu diesen zählen Kennzahlen, die auf dem Inner Product oder der Intersection basieren. Folgende Definitionen beruhen auf den Erkenntnissen in \cite{lit:Cha2007}.
+\\
+\\
+Hierzu zählen unter anderem Kennzahlen, die auf dem Inner Product basieren. Hierbei treten die zwei Dichtefunktionen $P$ und $Q$ in der folgenden Form auf:
+\begin{equation}
+	s = P \bullet Q = \sum\limits_{i=1}^d = P_iQ_i
+	\label{eqn:tax:dot}
+\end{equation}
+Das Inner Product von zwei Vektoren wird ebenso als Skalarprodukt bezeichnet.
+\\
+\\
+Des Weiteren gibt es noch Kennzahlen, die auf der Überschneidung von Dichtefunktionen aufbauen. In der Form einer Similarity treten diese wie folgt auf:
+\begin{equation}
+	s = \sum\limits_{i=1}^N\min(P_i,Q_i)
+	\label{eqn:tax:sintersection}
+\end{equation}
+Durch die bereits in \autoref{sec:grundl:eval} genannte Umformung $d = 1 - s$, lässt sich die Intersection ebenso als Distanz formulieren:
+\begin{equation}
+	d = \frac{1}{2}\sum\limits_{i=1}^N|P_i - Q_i|
+	\label{eqn:tax:dintersection}
+\end{equation}
+
+\section{Mathematische Beschreibung der Evaluierungstechniken von Wahrscheinlichkeitsdichtefunktionen}
+\label{sec:haupt:math}
+
+%\subsection{Telescope Distance}
+%\label{sec:haupt:telescope}
+%\workTodo{}
+%
+%\subsection{Jaccard Coefficient}
+%\label{sec:haupt:jaccardcoeff}
+%\workTodo{}
+%
+%\subsection{Dice Coeffiecient}
+%\label{sec:haupt:dice}
+%\workTodo{}
+%
+%\subsection{Wave Hedges}
+%\label{sec:haupt:wave}
+%\workTodo{}
+%
+%\subsection{Czekanowski Coefficient}
+%\label{sec:haupt:czekanowski}
+%\workTodo{s -> d: sorensen/bray-curtis/canberra, 0.5:Motyka}
+%
+%\subsection{Jaccard und Tanimoto Distance}
+%\label{sec:haupt:tanimoto}
+%\workTodo{1 - d: ruzicka}
+%
+%\subsection{Lorentzian Coefficient}
+%\label{sec:haupt:lotrentzian}
+%\workTodo{}
+
+Im Folgenden werden einige Evaluierungstechniken bzw. Algorithmen, gemäß ihrer Definition, diskret oder kontinuierlich beschrieben.
+%\workTodo{Levy, Pro(k)horov, Inception -> Mode Sore, Fréchet Inception, Area Validation Metric}
+\subsection{Kolmogorov-Smirnov Metrik}
+\label{sec:haupt:kolmogorov}
+
+Die Kolmogorov-Smirnov Distanz - oder auch Kolmogorov-Smirnov Metrik - gehört zu der Familie der Integral Probability Metrics.
+Sie ist, im Normalfall, als die $L_1$ Norm (vgl. \autoref{sec:haupt:minkowski}) zwischen zwei kumulativen Dichtefunktionen definiert:
+\begin{equation}
+	d_{KS}(\mathbb{P},\mathbb{Q}) = \sup\limits_{x \in \mathbb{R}} \left|F_p(x) - F_q(x)\right|
+	\label{eqn:math:kscont}
+\end{equation}
+In \autoref{eqn:math:kscont} stehen $\mathbb{P}$ und $\mathbb{Q}$ für kumulative Verteilungsfunktionen und $sup$ für die Supremum Funktion. Diese gibt die kleinste obere Schranke einer Punktedifferenz, also die maximale Differenz, wieder. Zusätzlich ist die Kolmogorov-Smirnov Distanz auf $[0,1]$ beschränkt, wodurch das Ergebnis leichter interpretiert werden kann. Sie wird, im Normalfall, dazu verwendet, um einen Kolmogorov-Smirnov Test durchzuführen. Hierbei werden zwei eindimensionale kumulative Verteilungsfunktionen verglichen. Dies geschieht durch den Hypothesentest $F_p(x) = F_q(x)$ \cite{lit:Gardner2018}.
+In diskreter Form und auf Dichtefunktionen bezogen, lässt sich diese, basierend auf \cite{lit:Rubner2000}, wie folgt definieren:
+\begin{equation}
+	d_{KS}(\mathbb{P},\mathbb{Q}) = \max\limits_{i}(\left|p_i - q_i\right|)
+	\label{eqn:math:ksdiskret}
+\end{equation}
+Hierbei kann, für diskrete Dichtefunktionen, die jeweilige kumulative Verteilungsfunktion iterativ berechnet werden. Für den diskreten Fall ist sie somit ähnlich aufgebaut wie die $L_\infty$ Metrik (vgl. \autoref{eqn:math:Linf}). Die Kolmogorov-Smirnov Distanz entspricht, im Falle von diskreten kumulativen Verteilungen, dem maximalen Abstand zwischen $\mathbb{P}$ und $\mathbb{Q}$. Sie eignet sich somit nicht für Datensätze oder Dichtefunktionen mit Ausreißern.
+\subsection{Wasserstein Distance}
+\label{sec:haupt:wasserstein}
+
+Die Wasserstein-1 Distance ist ein Maß für die Distanz zwischen zwei Dichtefunktionen. Sie wird ebenso als die Earth Mover's (EM) Distance bezeichnet. Sie ist definiert durch \cite{lit:Weng2019}:
+\begin{equation}
+	W(\mathbb{P},\mathbb{Q}) = \inf\limits_{\gamma \in \prod(\mathbb{P},\mathbb{Q})} \mathbb{E}_{(x,y) \sim \gamma} \left[\parallel x - y\parallel\right]
+	\label{eqn:math:wasserstein1}
+\end{equation}
+In \autoref{eqn:math:wasserstein1} ist $\prod(\mathbb{P},\mathbb{Q})$ die Menge aller gemeinsamen Wahrscheinlichkeitsverteilungen zwischen $\mathbb{P}$ und $\mathbb{Q}$. $\gamma \in \prod(\mathbb{P},\mathbb{Q})$ beschreibt eine der Transformationen, um $\mathbb{P}$ in $\mathbb{Q}$ zu überführen. Die EM-Distanz stellt die \textqu{Kosten} dar.
+Mit Hilfe der Kantorovich-Rubinstein Dualität lässt sich die Wasserstein Distanz ebenso als Integral Probability Metric, wie folgt, definieren \cite{lit:Arjovsky2017}:
+\begin{equation}
+	W(\mathbb{P},\mathbb{Q}) = \sup\limits_{\parallel f \parallel_L \leq 1} \mathbb{E}_{x \sim \mathbb{P}} \left[f(x)\right] - \mathbb{E}_{x \sim \mathbb{Q}} \left[f(x)\right]
+	\label{eqn:math:wassersteinipm}
+\end{equation}
+In \autoref{eqn:math:wassersteinipm} umfasst die Menge der Funktionen $\mathcal{F}$ (vgl. \autoref{eqn:tax:ipm}) alle 1-Lipschitz Funktionen. Der Ausdruck $\mathbb{E}_{(x,y) \sim P}\left[f(x)\right]$ stellt den Erwartungswert in Bezug auf die Verteilung $P$ der Funktion $f(x)$ dar. Analog dazu lässt sich der Ausdruck $\mathbb{E}_{(x,y) \sim Q}\left[f(x)\right]$ erklären. Es ist zu beachten, dass die Definition einer Integral Probability Metric, von der in \autoref{eqn:tax:ipm}, abweicht. Der Übergang von Integralen zu Erwartungswerten erfolgt ähnlich wie in \autoref{eqn:dichte:imom}.
+
+\subsection{Cramér Distance}
+\label{sec:haupt:cramer}
+
+Eine weitere Integral Probability Metric ist die Cramér Distance \cite{lit:Bellemare2017}. Diese ist definiert durch:
+\begin{equation}
+	L_2^2(\mathbb{P},\mathbb{Q}) := \int\limits_{-\infty}^{\infty}(F_P(x) - F_Q(x))^2 \,dx
+	\label{eqn:math:cramer}
+\end{equation}
+In \autoref{eqn:math:cramer} ist zu erkennen, dass die Cramér Distance keine vollwertige Metrik darstellt. Allerdings stellt ihre Wurzel eine dar und gehört zur $L_P$ Familie der Metriken (vgl. \autoref{sec:haupt:minkowski}).
+\subsection{Minkowski}
+\label{sec:haupt:minkowski}
+
+Die Minkowski Metrik stellt die Familie der $L_p$ Metriken dar. Sie ist definiert durch \cite{lit:Bellemare2017}:
+\begin{equation}
+	L_p(\mathbb{P},\mathbb{Q}) := \left(\int\limits_{-\infty}^{\infty}\left|F_P(x) - F_Q(x)\right|^p \,dx\right)^{\frac{1}{p}}
+	\label{eqn:math:minkowskicont}
+\end{equation}
+Für den diskreten Fall kann sie, wie folgt, beschrieben werden \cite{lit:Cha2007}:
+\begin{equation}
+	d_{L_p}(\mathbb{P},\mathbb{Q}) = \sqrt[p]{\sum\limits_{i = 1}^{n} \left|P_i - Q_i\right|^p}
+	\label{eqn:math:minkowskidiskret}
+\end{equation}
+Die Minkowski Metrik ist eine Verallgemeinerung von verschiedenen anderen Distanzen. Diese ergeben sich durch die entsprechenden Werte für den Parameter $p$. Beispielsweise führt $p = 1$ zur $L_1$ Metrik. Diese wird ebenso als City-Block oder Manhattan-Distanz bezeichnet:
+\begin{equation}
+	d_{L_1}(\mathbb{P},\mathbb{Q}) = \sum\limits_{i = 1}^{N} \left|P_i - Q_i\right|
+	\label{eqn:math:L1}
+\end{equation}
+Durch die Wahl $p = 2$ ergibt sich die Euklidische Distanz:
+\begin{equation}
+	d_{L_2}(\mathbb{P},\mathbb{Q}) = \sqrt[2]{\sum\limits_{i = 1}^{N} \left|P_i - Q_i\right|^2}
+	\label{eqn:math:L2}
+\end{equation}
+Für $p = \infty$ ergibt sich die Chebyshev-Distanz, die als die maximale Differenz zweier Datensätze definiert ist:
+\begin{equation}
+	d_{L_{\infty}}(\mathbb{P},\mathbb{Q}) = \max\limits_{i}\left|P_i - Q_i\right|
+	\label{eqn:math:Linf}
+\end{equation}
+Grundlegend lässt sich sagen, dass durch die Wahl eines höheren Werts für $p$, die größte Distanz bzw. Differenz zweier Elemente höher gewichtet wird. Es ist der Zusammenhang zwischen den $L_p$ und Wasserstein Metriken anzumerken. Für den Fall $p = 1$ sind diese identisch. Ebenso wie Wasserstein Metriken, können $L_p$ Metriken, in der Form einer Integral Probability Metric, beschrieben werden \cite{lit:Bellemare2017}:
+\begin{equation}
+	d_{Mk}(\mathbb{P},\mathbb{Q}) = \sup\limits_{f \in \mathbb{F}_q}\left|\mathbb{E}_{x \sim P}f(x) - \mathbb{E}_{x \sim Q}f(x)\right|
+	\label{eqn:math:minkowskiipm}
+\end{equation}
+In \autoref{eqn:math:minkowskiipm} wird hier das Supremum über die absolut stetigen Funktionen $\mathbb{F}_q$ gebildet. Der Ausdruck $\mathbb{E}_{x \sim P}f(x)$ stellt den Erwartungswert in Bezug auf die Verteilung $P$ der Funktion $f(x)$ dar. Analog dazu lässt sich der Ausdruck $\mathbb{E}_{x \sim Q}f(x)$ erklären.
+
+\subsection{Maximum Mean Discrepancy}
+\label{sec:haupt:maxmeandiscrepancy}
+
+Die Maximum Mean Discrepancy (MMD) gehört zur Klasse der Integral Probability Metrics, wenn in \autoref{eqn:tax:ipm} für $\mathcal{F} = \left\{ f :\, \parallel f \parallel_{\mathcal{H}} \,\leq\, 1\right\}$ gilt, wobei $\mathcal{H}$ den reproduzierenden Kernel Hilbertraum (\textit{engl.: Reproducing Kernel Hilbert Space (RKHS)}) bezeichnet. Sie bewertet die Differenz zweier Distributionen mit Hilfe einer Glättungsfunktion. Diese Funktion erzeugt für Stichproben aus $\mathbb{P}$ große und für $\mathbb{Q}$ kleine Werte. Für Samples $x$ und $y$, entsprechend aus $\mathbb{P}$ und $\mathbb{Q}$, ist die MMD wie folgt definiert \cite{lit:Gardner2018}:
+\begin{equation}
+	d_{MMD}(\mathbb{P},\mathbb{Q}) = \sup\limits_{f \in \mathcal{F}}\left|\mathbb{E}_x\left[f(x)\right] - \mathbb{E}_y\left[f(y)\right]\right|
+	\label{eqn:math:mmd}
+\end{equation}
+Die \autoref{eqn:math:mmd} liefert Werte für die beiden Stichproben, wobei die Differenz zwischen den Mittelwerten dieser Funktionswerte, dem MMD entspricht. D.\, h. dem maximalen Abstand zwischen den Mittelwerten nach der Transformation durch die Glättungsfunktion $f$. Zu der Funktionsklasse $\mathcal{F}$ gehören alle Funktionen, die einen RKHS produzieren, sogenannte reproduzierende Kernels. Es gibt eine Reihe von Kernels $k(\cdotp,\cdotp)$, die in der MMD gewählt werden können. Eine beliebte Wahl ist der radiale Basiskernel: 
+\begin{equation}
+	k(x,x') = e^{\frac{\parallel x - x'\parallel^2}{2\sigma^2}}
+	\label{eqn:math:mmdkernel}
+\end{equation}
+Hierbei sind $x$ und $x'$ jeweils Samples aus den entsprechenden Dichtefunktionen $p(x)$ und $q(x)$. Der Parameter $\sigma$ wird oft durch den Median der paarweisen Abstände zwischen den gemeinsamen Daten bestimmt.
+
+\subsection{Total Variation Metric}
+\label{sec:haupt:totalvariation}
+
+Die Total Variation Metric nimmt eine besondere Stellung unter den Evaluierungstechniken ein. Sie kann zum einen, durch die Wahl von $f(t) = \frac{\left|t - 1\right|}{2}$ in \autoref{eqn:tax:fdiv}, als $f$-Divergence beschrieben werden. Zum anderen kann sie, durch die Wahl von $\mathcal{F} = \left\{ f :\, \parallel f \parallel_{\infty} \,\leq\, 1\right\}$ in \autoref{eqn:tax:ipm}, als Integral Probability Metric definiert werden.
+Eine Möglichkeit, diese zu beschreiben, ist wie folgt \cite{lit:Gardner2018}:
+\begin{equation}
+	d_{TV}(\mathbb{P},\mathbb{Q}) = \sqrt{\frac{1}{2}\int\left|p(x) - q(x)\right|\,dx}
+	\label{eqn:math:tv}
+\end{equation}
+Es ist anzumerken, dass der Wertebereich der Gleichung \autoref{eqn:math:tv} auf $\left[0,1\right]$ beschränkt ist.
+
+\subsection{Shannon Entropie}
+\label{sec:haupt:relentropy}
+
+Die wohl bekannteste und am häufigsten verwendete $f$-Divergence ist die Kullback-Leibler Divergenz. In \autoref{eqn:tax:fdiv} muss hierbei für $f(t) = t\ln(t)$ eingesetzt werden. Die diskrete Variante der Kullback-Leibler Divergence lautet \cite{lit:Cha2007}:
+\begin{equation}
+	d_{KL}(\mathbb{P},\mathbb{Q}) = \sum\limits_{i = 1}^N p_i\ln\left(\frac{p_i}{q_i}\right)
+	\label{eqn:math:kl}
+\end{equation}
+Die \autoref{eqn:math:kl} ist ein Maß der relativen Entropie (vgl. \autoref{eqn:tax:entropie}) und gibt die Menge an Information an, die benötigt wird, um die Änderung der Wahrscheinlichkeit von $\mathbb{Q}$ nach $\mathbb{P}$ zu kodieren. Der Grund für ihre Popularität ist die leichte Optimierung und die Verbindung zur \textit{Maximum Likelihood Estimation}, die bei generativen Algorithmen von Bedeutung ist \cite{lit:Bellemare2017}. Sie ist ebenfalls skaleninvariant. Es ist anzumerken, dass die KL-Divergence keine Metrik darstellt, wie in \autoref{sec:grundl:eval} beschrieben. Sie ist nicht symmetrisch und erfüllt nicht die Dreiecksungleichung. Mit Hilfe von Transformationen, wie \zB die in \autoref{tab:grundl:eval} aufgeführten, lässt sich eine symmetrische Form erzeugen. So ist die Jensen-Shannon Distanz eine symmetrische Version der KL-Divergence und eine vollwertige Metrik \cite{lit:Gardner2018}:
+\begin{equation}
+	d_{JS}(\mathbb{P},\mathbb{Q}) = \sqrt{\frac{1}{2}d_{KL}\left(\mathbb{P},\frac{\mathbb{P} + \mathbb{Q}}{2}\right) + \frac{1}{2}d_{KL}\left(\mathbb{Q},\frac{\mathbb{P} + \mathbb{Q}}{2}\right)}
+	\label{eqn:math:js}
+\end{equation}
+
+Aus Anwendersicht stellt sich hierbei die Frage, wann die Kullback-Leibler und wann die Jensen-Shannon Divergence verwendet werden soll. Ein Vergleich der beiden Evaluierungstechniken ist in \autoref{img:math:shannon} für 99 Samples dargestellt.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics{fig/haupt/math/KL_JS}
+	\caption{Vergleich der Kullback-Leibler und Jensen-Shannon Divergence über 99 Samples}
+	\label{img:math:shannon}
+\end{figure}
+
+Es ist zu erkennen, dass der Verlauf der beiden Evaluierungstechniken sehr ähnlich ist. Die Jensen-Shannon Divergence ist hierbei stärker skaliert, als die Kullback-Leibler Divergence.
+
+\FloatBarrier
+\subsection{$\chi^2$-Distance}
+\label{sec:haupt:x2}
+
+Eine weitere $f$-Divergence ist die $\chi^2$-Distance. Gemäß \autoref{eqn:tax:fdiv} wird hierbei $f(t) = (t - 1)^2$ verwendet. Dafür ergibt sich Pearson $\chi^2$ \cite{lit:Cha2007}:
+\begin{equation}
+	d_{\chi^2}(\mathbb{P},\mathbb{Q}) = \sum\limits_{i = 1}^N \frac{(P_i - Q_i)^2}{Q_i}
+	\label{eqn:math:chi2}
+\end{equation}
+Die \autoref{eqn:math:chi2} kann ebenso in symmetrischer Form auftreten:
+\begin{equation}
+	d_{\chi^2}(\mathbb{P},\mathbb{Q}) = \sum\limits_{i = 1}^N \frac{(P_i - Q_i)^2}{P_i + Q_i}
+	\label{eqn:math:chi2sym}
+\end{equation}
+
+\subsection{Hellinger Distance}
+\label{sec:haupt:hellinger}
+
+Die Hellinger Distanz gehört zu den $f$-Divergences, wenn in \autoref{eqn:tax:fdiv} für $f(t) = (\sqrt{t} - 1)^2$ eingesetzt wird. Sie ist nach \autoref{sec:grundl:eval} eine vollwertige Metrik \cite{lit:Gardner2018}. Ebenso ist sie, analog zur Euklidischen Distanz in \autoref{eqn:math:L2}, eine $L_2$-Norm für Wahrscheinlichkeitsmaße. Sie ist durch folgende Rechenvorschrift definiert:
+\begin{equation}
+	d_H(\mathbb{P},\mathbb{Q}) = \sqrt{\sum\limits_{i = 1}^N \left(\sqrt{P_i} - \sqrt{Q_i}\right)^2}
+	\label{eqn:math:hellinger}
+\end{equation}
+\subsection{Mahalanobis Distance}
+\label{sec:haupt:mahalanobis}
+
+Die Mahalanobis Distanz gehört zu der Klasse der Bregman-Divergences. Hierbei wird in \autoref{eqn:tax:bregman} für $\varphi(t) = \frac{1}{2}xAx^T$ eingesetzt. Sie ist definiert durch \cite{lit:Weller2015}:
+\begin{equation}
+	\parallel x - y \parallel_A = \sqrt{(\det A)^{\frac{1}{n}}(x - y)A^{-1}(x - y)^T}
+	\label{eqn:math:mahalanobis}
+\end{equation}
+In \autoref{eqn:math:mahalanobis}  sind $x$ und $y$ Vektoren, jeweils mit der Länge $n$. Die Matrix $A$ ist üblicherweise die Kovarianzmatrix. Eine wichtige Eigenschaft ist, dass sie skalen- und translationsinvariant ist.
+\subsection{Itakura-Saito Distance}
+\label{sec:haupt:itakurasaito}
+
+Die Itakura-Saito Distanz gehört zur Familie der Bregman-Divergenzen. Hierbei wird in \autoref{eqn:tax:bregmandiskret} für $\varphi(t) = -\log(t)$ eingesetzt \cite{lit:Munoz2015}. Dadurch ergibt sich:
+\begin{equation}
+	d_\varphi(\mathbb{P},\mathbb{Q}) = \sum\limits_{i = 1}^N \left(\frac{p_i}{q_i} - \log\left(\frac{p_i}{q_i}\right) - 1\right)
+	\label{eqn:math:itakura}
+\end{equation}
+
+\subsection{Structural Similarity Index}
+\label{sec:haupt:ssi}
+
+Der Structural Similarity Index ist, im Normalfall, eine Maßzahl, die Aussagen über die Ähnlichkeit zweier Bilder trifft. Es wurde gezeigt, dass diese ebenso für vektorielle bzw. sequenzielle Datensätze $x$ und $y$, mit gleicher Länge, verwendet werden kann \cite{lit:Parthasarathy2020}. Die folgenden Definitionen, in Bezug auf den Structural Similarity Index, basieren auf \cite{lit:Wang2004}. Die formale Beschreibung eines Ähnlichkeitsmaß ist definiert durch:
+\begin{equation}
+	S(x,y) = f\left(l(x,y),c(x,y),s(x,y)\right)
+	\label{eqn:math:sim}
+\end{equation}
+Hierbei wird die Ähnlichkeit in drei Komponenten aufgeteilt, die relativ unabhängig voneinander sind. $S(x,y)$ ist symmetrisch und auf $\left[0,1\right]$ beschränkt. Der Fall $S(x,y) = 1$ liegt nur im Fall $x=y$ vor, \dah wenn die zwei Datensätze identisch sind. Im Kontext der Bildverarbeitung beschreibt in \autoref{eqn:math:sim} $l(x,y)$ den Lumineszenz-Vergleich, $c(x,y)$ den Kontrast-Vergleich und $s(x,y)$ den Struktur-Vergleich zweier Bilder.
+
+Der Lumineszenz-Vergleich ist abhängig von den Mittelwerten $\mu_x$ und $\mu_y$ der entsprechenden Datensätze:
+\begin{equation}
+	l(x,y) = \frac{2\mu_x\mu_y + C_1}{\mu_x^2 + \mu_y^2 + C_1}
+	\label{eqn:math:siml}
+\end{equation}
+In \autoref{eqn:math:siml} dient die Konstante zur Stabilisierung des Nenners, falls $\mu_x^2 + \mu_y^2$ sehr nahe an null ist. Eine Möglichkeit wäre die Wahl zu $C_1 = (K_1L)^2$. Hierbei ist $L$ die Spannweite der möglichen Werte. Im Falle von Pixel-Werten beträgt diese für 8-bit Graustufenbilder 255. $K_1$ ist eine sehr kleine Konstante $K_1 \ll 1$. 
+
+Der Kontrast-Vergleich $c(x,y)$ ist ähnlich beschrieben wie $l(x,y)$, basiert allerdings auf den Standardabweichungen $\sigma_x$ und $\sigma_y$ der entsprechenden Datensätze:
+\begin{equation}
+	c(x,y) = \frac{2\sigma_x\sigma_y + C_2}{\sigma_x^2 + \sigma_y^2 + C_2}
+	\label{eqn:math:simc}
+\end{equation}
+Ähnlich wie in \autoref{eqn:math:siml} dient die Konstante $C_2$ zur Stabilisierung und kann durch $C_2 = \left(K_2L\right)^2$, mit $K_2 \ll 1$, bestimmt werden.
+
+Analog zum Lumineszenz- und Kontrast-Vergleich kann der Struktur-Vergleich $s(x,y)$ beschrieben werden. Dieser bezieht die Korrelation $\sigma_{xy}$ als Strukturfaktor mit ein:
+\begin{equation}
+	s(x,y) = \frac{\sigma_{xy} + C_3}{\mu_x^2 + \sigma_y + C_3}
+	\label{eqn:math:sims}
+\end{equation}
+
+Wenn $l(x,y)$, $c(x,y)$ und $s(x,y)$ zusammengefasst werden, lässt sich der Structural Similarity Index formal, wie folgt, definieren:
+\begin{equation}
+	S(x,y) = \left[l(x,y)\right]^\alpha \cdotp \left[c(x,y)\right]^\beta \cdotp \left[s(x,y)\right]^\gamma
+	\label{eqn:math:ssim}
+\end{equation}
+In \autoref{eqn:math:ssim} gilt $\alpha,\ \beta,\ \gamma > 0$. Diese Parameter können dazu verwendet werden, um die einzelnen Komponenten zu gewichten.
+
+Für $\alpha = \beta = \gamma = 1$ (gleiche Gewichtung) sowie $C_3 = \frac{C_2}{2}$, ergibt sich folgende Form des Structural Similarity Index:
+\begin{equation}
+	SSIM(x,y) = \frac{(2\mu_x\mu_y + C_1)(2\sigma_{xy} + C_2)}{(\mu_x^2 + \mu_y^2 + C_1)(\sigma_x^2 + \sigma_y^2 + C_2)}
+	\label{eqn:math:ssim1}
+\end{equation}
+Es ist anzumerken, dass \autoref{eqn:math:ssim1} ausschließlich von statistischen Kennzahlen der Datensätze $x$ und $y$ abhängig ist und dementsprechend eine Art von Similarity Coefficient darstellt.
+
+\subsection{Dynamic Time Warping}
+\label{sec:haupt:dtw}
+
+Beim Dynamic Time Warping Algorithmus werden zwei Zeitreihen $T = \left\lbrace t_1, t_2, \ldots, t_n \right\rbrace$ und $S = \left\lbrace s_1, s_2, \ldots, s_m \right\rbrace$, unabhängig ihrer Längen $n$ und $m$, miteinander verglichen \cite{lit:Cassisi2012}. Hierbei liegt der Fokus auf der Ähnlichkeit ihrer Formen und nicht auf dem Zeitpunkt ihres Datenpunktes. Dadurch kann, trotz beispielsweise möglicher Verschiebungen, ähnliche Formen der beiden Datensätze, erkannt werden. Der Dynamic Time Warp kann ebenso auf allgemeine vektorielle Datensätze, wie beispielsweise zwei diskrete Dichtefunktionen $\mathbb{P}$ und $\mathbb{Q}$, angewandt werden \cite{lit:Parthasarathy2020}.
+
+Zu Beginn wird die $m \times n$ - Distanzmatrix aufgestellt, welche die Distanzen $d(\mathbb{P}_i, \mathbb{Q}_j)$ (vgl. \autoref{eqn:math:dtwd}) beinhaltet.
+\begin{equation}
+	distMatrix = \begin{pmatrix}
+		d(P_1,Q_1) & d(P_1,Q_2) & \cdots & d(P_1,Q,m) \\
+		d(P_2,Q_1) & d(P_2,Q_2) & & \vdots \\
+		\vdots & & \ddots & \\
+		d(P_n,Q_1) & \cdots & & d(P_n,Q_m)
+	\end{pmatrix}
+	\label{eqn:math:dtwdist}
+\end{equation}
+Hierbei entspricht $d(P_i,Q_j)$ der Distanz zwischen den Punkten $P_i$ und $Q_i$ mit $1 \leq i \leq n$ und $1 \leq j \leq m$. Ziel des DTW ist es, den kürzesten \textit{Warping Path} $W = \left\lbrace w_1, w_2, \ldots, w_K \right\rbrace$, mit $\max(n,m) < K < m + n - 1$ und $w_k = distMatrix(i,j)$, zu finden. Für die einzelnen $w_k$ bzw. Distanzen in der Distanzmatrix, lassen sich beliebige Distanzfunktionen $d(\cdotp,\cdotp)$ verwenden. Eine solche Distanzfunktion kann \zB, wie folgt beschrieben, definiert werden:
+\begin{equation}
+	w(\mathbb{P},\mathbb{Q}) = \sum\limits_{i,j}\left(P_i - Q_j\right)^2
+	\label{eqn:math:dtwd}	
+\end{equation}
+
+Der Algorithmus beginnt bei $w_1 = (1,1)$ und endet maximal bei $w_K = (n,m)$. In jedem Schritt wird, innerhalb der Distanzmatrix, die geringste Distanz aller anliegenden Punkte als nächstes $w_k$ bestimmt, so dass der \textit{Warping Path} $W$, wie in \autoref{eqn:math:dtwmin} beschrieben, minimiert wird.
+
+\begin{equation}
+	DTW(\mathbb{P},\mathbb{Q}) = \min\sqrt{\sum\limits_{k = 1}^{K}  w_k}
+	\label{eqn:math:dtwmin}	
+\end{equation}
+Für die einzelnen Distanzen $w_k = (i,j)$ bzw. $w_{k - 1} = (i',j')$, mit $i,i' \leq n$ und $j,j' \leq m$, muss gelten:
+\newpage
+\begin{itemize}
+	\item $w_1 = (1,1)\ \wedge \ w_K = (n,m)$
+	\item $i - i' \leq 1\ \wedge \ j - j' \leq 1$
+	\item $i - i' \geq 0 \ \wedge \ j - j' \geq 0$
+\end{itemize}
+\section{Gegenüberstellung der Evaluierungstechniken}
+\label{sec:haupt:eval}
+
+Im weiteren Verlauf werden die in \autoref{sec:haupt:math} beschriebenen Evaluierungstechniken, anhand ausgewählter Bewertungskriterien, bewertet. Nach einer Gegenüberstellung erfolgt die Empfehlung einer Evaluierungstechnik sowie deren Implementierung. Anschließend wird diese auf ausgewählte generierte Daten angewandt und die Ergebnisse validiert.
+
+\subsection{Bewertung der Evaluierungstechniken}
+\label{sec:haupt:bewert}
+Im Folgenden werden die in \autoref{sec:haupt:math} beschriebenen Evaluierungstechniken, auf Basis von ausgewählten Bewertungskriterien, qualitativ bewertet. Die hierbei verwendeten Kriterien werden nachfolgend genannt und beschrieben.
+
+\begin{description}
+	\item[Effektivität (E)] Die Effektivität einer Evaluierungstechnik ist stellvertretend für die Qualität bzw. Güte des zugrundeliegenden Ähnlichkeitsmaßes. Im zugrundeliegenden Anwendungsfall kann diese als wichtigstes Kriterium betrachtet werden. Die Güte ist dabei, teils stark, von den entsprechenden Daten abhängig. Ein weiterer Aspekt von hoher Relevanz ist die Entwicklung bzw. der Verlauf der Ähnlichkeitswerte. Diese sollten plausible Werte über den gesamten Wertebereich liefern.
+	\item[Komplexität (K)] Zur Komplexität der Evaluierungstechniken gehört die Zeitkomplexität. Diese kann anhand der jeweiligen Implementierung bestimmt werden. Hierbei wird die Big-O Notation - oder auch Landau Symbol $\mathcal{O}$ - verwendet. Daraus folgt ebenso die entsprechende Laufzeit bzw. Effizienz der Evaluierungstechnik. Diese ist von der Anzahl an Datenpunkten abhängig.
+	\item[Anwendbarkeit (A)] Die Anwendbarkeit einer Evaluierungstechnik ist davon abhängig, wie einfach diese auf eine Wahrscheinlichkeitsdichtefunktion anwendbar ist. Es ist hierbei zu beachten, ob die zugrundeliegende Implementierung mit einem hohen Aufwand verbunden ist. Beispielsweise in Form von Optimierungsprozessen.
+	\item[Transparenz (T)] Die Transparenz ist ein Maß für die Klarheit und den Umfang der Evaluierungstechnik. Insbesondere ob genügend Literaturquellen diese Methode fundiert und ausführlich beschreiben.
+	\item[Robustheit (R)] Die Robustheit einer Evaluierungstechnik beschreibt, inwiefern diese mit Messungenauigkeiten umgehen kann. Hierzu zählen beispielsweise Peaks, Rauschen oder Ausreißer der Daten.
+	\item[Parametrisierbarkeit (P)] Die Parametrisierbarkeit gibt an, ob die Evaluierungstechnik Parameter enthält und falls dieses der Fall ist, inwiefern diese, nach Qualitätsaspekten, einzustellen sind. Beispielsweise existieren Parameter, die typischerweise über Optimierungsprozesse oder empirische Methoden bestimmt werden.
+	\item[Interpretierbarkeit (I)] Die Interpretierbarkeit gibt an, wie gut die Daten bzw. Ergebnisse der Evaluierungstechnik interpretiert werden können. Methoden, die standardisiert, auf einen Wertebereich beschränkt sind oder gegen einen bestimmten Wert konvergieren, haben hierbei eine hohe Aussagekraft. Falls dies nicht der Fall ist, können die Ergebnisse, auf Basis von Expertenwissen oder Erfahrungswerten, qualitativ bewertet bzw. interpretiert werden.
+\end{description}
+
+Nachfolgend werden die genannten Bewertungskriterien in drei verschiedene Stufen eingeteilt. Die beschriebenen Kriterien können, anhand der Symbole \enquote{+} als positive, \enquote{o} als neutrale sowie \enquote{-} als negative Eigenschaft, auftreten. Ein genauere Beschreibung der Unterteilung erfolgt in \autoref{tab:haupt:krit}.
+
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{l|c|p{0.69\linewidth}}
+		\toprule
+		Effektivität & + & Evaluierungstechnik weißt eine hohe Qualität auf.\\
+		\midrule
+		& o & Evaluierungstechnik weißt eine mäßige Qualität auf.\\
+		\midrule
+		& - & Evaluierungstechnik weißt eine niedrige Qualität auf.\\
+		\midrule
+		Komplexität & + & Evaluierungstechnik besitzt eine niedrige Zeitkomplexität und Laufzeit.\\
+		\midrule
+		& o & Evaluierungstechnik besitzt eine mäßige Zeitkomplexität und Laufzeit.\\
+		\midrule
+		& - & Evaluierungstechnik besitzt eine hohe Zeitkomplexität und Laufzeit.\\
+		\midrule
+		Anwendbarkeit & + & Evaluierungstechnik lässt sich grundsätzlich leicht umsetzen oder (Referenz-)Implementierung(en) sind vorhanden.\\
+		\midrule
+		& o & Evaluierungstechnik lässt sich nur bedingt einfach umsetzen. Es stehen keine (Referenz-)Implementierungen zur Verfügung.\\
+		\midrule
+		& - & Evaluierungstechnik lässt sich grundlegend schwierig umsetzen und
+		(Referenz-)Implementierungen stehen nicht zur Verfügung.\\
+		\midrule
+		Transparenz & + & Evaluierungstechnik ist transparent beschrieben und verständlich.\\
+		\midrule
+		& o & Evaluierungstechnik ist eher mäßig transparent beschrieben (\zB mathematische
+		Beschreibung nicht vollständig dokumentiert).\\
+		\midrule
+		& - & Evaluierungstechnik setzt ein vertieftes mathematisches Wissen
+		voraus und/oder dessen Beschreibung ist größtenteils unvollständig.\\
+		\midrule
+		Robustheit & + & Evaluierungstechnik ist robust gegenüber Ungenauigkeiten der Daten (z. B.
+		Messfehler, Rauschen oder Ausreißer).\\
+		\midrule
+		& o & Die Evaluierungstechnik ist nicht vollkommen robust gegenüber Ungenauigkeiten
+		der Daten.\\
+		\midrule
+		& - & Die Evaluierungstechnik ist nicht robust gegenüber Ungenauigkeiten der Daten.\\
+		\midrule
+		Parametrisierbarkeit & + & Die Evaluierungstechnik beinhaltet keine oder nur wenige Parameter. Falls diese Parameter umfasst, dann sind sie leicht einstellbar.\\
+		\midrule
+		& o & Die Evaluierungstechnik beinhaltet mehrere Parameter. Diese sind nicht alle einfach einstellbar.\\
+		\midrule
+		& - & Die Evaluierungstechnik beinhaltet mehrere bis viele Parameter. Zumindest die meisten davon sind nicht einfach einstellbar.\\
+		%Evaluierungstechnik weißt eine hohe Parametrisierbarkeit auf. Für die Ermittlung dieser ist ein hoher Aufwand oder ein Optimierungsprozess notwendig. keine und kein anwendungsfall\\
+		\midrule
+		Interpretierbarkeit & + & Das Ergebnis der Evaluierungstechnik ist leicht interpretierbar.\\
+		\midrule
+		& o & Das Ergebnis der Evaluierungstechnik ist mäßig interpretierbar.\\
+		\midrule
+		& - & Das Ergebnis der Evaluierungstechnik lässt sich schwierig interpretieren.\\
+		\bottomrule
+	\end{tabular}
+	\caption{Beschreibung der Bewertungskriterien}
+	\label{tab:haupt:krit}
+\end{table}
+
+Weiterhin erfolgt eine Gegenüberstellung der Evaluierungstechniken, auf Basis der beschriebenen Bewertungskriterien, in \autoref{tab:haupt:eval}.
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{p{0.35\linewidth}|P{0.05\linewidth}|P{0.09\linewidth}|P{0.05\linewidth}|P{0.05\linewidth}|P{0.05\linewidth}|P{0.05\linewidth}|P{0.05\linewidth}}
+		\toprule
+		\textbf{Evaluierungstechnik} & \textbf{E} & \textbf{K} & \textbf{A} & \textbf{T} & \textbf{R} & \textbf{P} & \textbf{I} \\
+		\midrule
+		Kolmogorov-Smirnov & + & + $\mathcal{O}(n)$ & o & + & - & - & +\\
+		\midrule
+		Wasserstein & + & \cellcolor{cyan!50} & o & o & \cellcolor{orange!50} & - & \cellcolor{orange!50}\\
+		\midrule
+		Cramér & o & + $\mathcal{O}(n)$ & o & + & o & + & +\\
+		\midrule
+		Minkowski & o & + $\mathcal{O}(n)$ & + & + & o & o & +\\
+		\midrule
+		Maximum Mean Discrepancy & o & \cellcolor{cyan!50} & o & o & + & - & \cellcolor{cyan!50}\\
+		\midrule
+		Total Variation Metric & + & + $\mathcal{O}(n)$ & + & + & o & + & +\\
+		\midrule
+		Kullback-Leibler & + & + $\mathcal{O}(n)$ & + & + & + & + & +\\
+		\midrule
+		Jensen-Shannon & + & + $\mathcal{O}(n)$ & + & + & + & + & +\\
+		\midrule
+		$\chi^2$ & + & + $\mathcal{O}(n)$ & + & + & - & + & o\\
+		\midrule
+		Hellinger & + & + $\mathcal{O}(n)$ & + & + & o & + & +\\
+		\midrule
+		Mahalanobis & o & + & + & + & + & o & o\\
+		\midrule
+		Itakura-Saito & + & + $\mathcal{O}(n)$ & + & o & o & + & o\\
+		\midrule
+		Structural Similarity Index & o & + & + & + & o & o & +\\
+		\midrule
+		Dynamic Time Warping & + & o $\mathcal{O}(n^2)$& + & o & + & o & o\\
+		\bottomrule
+	\end{tabular}
+	\caption{Bewertung der Evaluierungstechniken}
+	\label{tab:haupt:eval}
+\end{table}
+
+\FloatBarrier
+Die beiden Farben in \autoref{tab:haupt:eval} haben die folgende Bedeutung:
+
+\begin{itemize}
+	\item Cyan: Das Kriterium kann, aufgrund der mathematischen Beschreibung der zugrundeliegenden Evaluierungstechnik, nicht zweckdienlich eingestuft werden.
+	\item Orange: Das Kriterium (zugehörig zur jeweiligen Evaluierungstechnik) kann, aufgrund begrenzter Literatur, nicht zweckdienlich eingestuft werden.
+\end{itemize}
+
+Die Implementierung der Kolmogorov-Smirnov Distanz erfolgt, wie in \autoref{eqn:math:ksdiskret} beschrieben, durch die simple Ermittlung der maximalen Differenz zweier kumulativer Verteilungsfunktionen. Diese muss jedoch zunächst, für die übergebenen Wahrscheinlichkeitsdichtefunktionen, iterativ berechnet werden.
+\\
+\\
+Die Wasserstein-1 Distanz - oder auch Earth Mover's Distance - beschreibt die \enquote{Kosten}, um eine Wahrscheinlichkeitsdichtefunktion, mit Hilfe einer Transformation,  in eine andere zu überführen. Hierbei wird die statistische Geometrie der Dichtefunktionen berücksichtigt. Daraus folgt eine hohe Qualität der hieraus resultierenden Diskrepanzen. Die Eigenschaften der Wasserstein Distanz sind stark abhängig von der gewählten Transformation. Daraus folgt eine hohe Parametrisierbarkeit, mit der Folge, dass die Wahl dieser in einem Optimierungsproblem resultiert. Es lassen sich hierbei keine allgemeinen Aussagen über die entsprechende Komplexität der Transformation treffen. Diese bestimmt ebenso die Anwendbarkeit bzw. wie leicht sie zu implementieren ist. Zudem bestimmt diese die Robustheit gegenüber etwaigen Messungenauigkeiten.
+\\
+\\
+Die Cramér Distanz entspricht der quadrierten Differenz von kumulativen Verteilungsfunktionen. Dementsprechend muss diese, in der Implementierung, iterativ berechnet werden.
+\\
+\\
+Die Minkowski Metrik ist eine verallgemeinerte Evaluierungstechnik, die verschiedene Distanzen beinhaltet. Die Werte sind hierbei nicht normalisiert und müssen, in einem weiteren Schritt, qualitativ bewertet werden. Im Allgemeinen besitzen die entsprechenden Distanzen, da es sich um Metriken handelt (vgl. \autoref{sec:grundl:eval}), eine hohe Qualität. In \autoref{eqn:math:minkowskidiskret} sind die Spezialfälle, durch die Wahl des Parameters $p$, bestimmt. Ein größeres $p$ bewirkt hierbei eine höhere Gewichtung der größten Differenz zweier Wahrscheinlichkeitsdichtefunktionen. Somit kann die Robustheit gegenüber Messungenauigkeiten, wie beispielsweise Ausreißern, angepasst werden. Die Wahl eines passenden Wertes für $p$ stellt allerdings einen Optimierungsprozess dar.
+\\
+\\
+Die Maximum Mean Discrepancy ist, wie viele andere Integral Probability Metrics, durch eine hohe Parametrisierbarkeit gekennzeichnet. Sie ist durch die Wahl einer reproduzierenden Kernelfunktion definiert. Die Zeitkomplexität ist hierbei von dem gewählten Kernel abhängig. Dieser bestimmt ebenso die Anwendbarkeit. Es handelt sich um eine komplexe Evaluierungstechnik, die ein vertieftes Verständnis in der Mengenlehre, speziell in Bezug auf den reproduzierenden Kernel Hilbertraum, voraussetzt. Die Kernelfunktion besitzt, auf Basis ihrer Definition, einen Glättungseffekt, wodurch sich eine hohe Robustheit gegenüber Messungenauigkeiten ergibt.
+\\
+\\
+Die Total Variation Metric ist auf [0,1] beschränkt und verfügt dementsprechend über eine hohe Aussagekraft. Sie kann als $f$-Divergence sowie als Integral Probability Metric beschrieben werden.
+\newpage
+Die Kullback-Leibler Divergence ist ein Maß der relativen Entropie und besitzt eine hohe Qualität. Um diese Divergence besser nachvollziehen zu können, ist ein grundlegendes Wissen über informationstheoretische Maße, speziell die Entropie, vorauszusetzen. Dennoch ist sie leicht zu implementieren. Durch ihre Skaleninvarianz ist sie Robust gegenüber Ausreißern. Sie ist Parameter-unabhängig. Da es sich hierbei um ein Divergenzmaß handelt, sind die Ergebnisse leicht zu interpretieren. Umso näher das Ergebnis bei null liegt, desto ähnlicher sind sich die übergebenen Wahrscheinlichkeitsdichtefunktionen. Bei identischen Dichtefunktionen ergibt sich für die Kullback-Leibler Divergence ein Wert von null.
+\\
+\\
+Die Jensen-Shannon Divergence ist eine symmetrische Version der Kullback-Leibler Divergence. Folglich besitzt sie ähnliche Eigenschaften. Die Evaluierungstechnik weist ebenfalls eine hohe Qualität auf. Sie ist robust gegenüber Messungenauigkeiten, leicht verständlich und leicht zu implementieren. Das Ergebnis lässt, sich analog zur Kullback-Leibler Divergence, interpretieren.
+\\
+\\
+Die $\chi^2$-Distance kann in symmetrischer oder asymmetrischer Form beschrieben werden. In beiden Fällen ist sie leicht verständlich und implementierbar.
+\\
+\\
+Die Hellinger Distanz ist eine vollwertige Metrik und auf [0,1] beschränkt. Aufgrund der metrischen Eigenschaften, besitzt sie eine hohe Güte. Werte, die näher bei null liegen, weisen hierbei auf ähnliche Wahrscheinlichkeitsdichtefunktionen. Folglich lässt sie sich leicht interpretieren.
+\\
+\\
+Die Mahalanobis Distanz ist eine Bregman-Divergence und nicht normalisiert bzw. auf einen bestimmten Wertebereich beschränkt. Umso näher ein Wert bei null liegt, desto ähnlicher sind sich die übergebenen Datensätze. Das Ergebnis muss folglich qualitativ bewertet werden. Sie besitzt den Parameter $A$, der meistens als die Kovarianzmatrix gewählt wird. Durch ihre Skalen- und Translationsinvarianz ist sie robust gegenüber Messungenauigkeiten. Es wird ein grundlegendes Verständnis der linearen Algebra und Statistik benötigt, um sie zu verstehen. Dennoch ist die Implementierung leicht durchzuführen.
+\\
+\\
+Die Itakura-Saito Distanz erfordert, um sie zu verstehen, ein vertieftes Wissen über Divergenzmaße, speziell über die Bregman-Divergences. Sie ist dennoch leicht anzuwenden.
+\\
+\\
+Der Structural Similarity Index ist auf [0,1] beschränkt. Hierbei ergibt sich, für den Fall von identischen Datensätzen, ein Wert von eins. Für den Fall, dass die Datensätze sich für keinen Punkt ähneln, ergibt sich ein Wert gegen null. Folglich lässt sich das Ergebnis leicht interpretieren. Da nur verschiedene statistische Kennzahlen miteinander verrechnet werden, weißt dieses Ähnlichkeitsmaß eine begrenzte Qualität auf. Die Evaluierungstechnik ist durch eine hohe Parametrisierbarkeit charakterisiert. Diese müssen, in einem Optimierungsprozess, bestimmt werden. Es handelt sich um ein sehr spezielles Ähnlichkeitsmaß aus der Bildverarbeitung, zu dem nicht viel Literatur zur Verfügung steht.
+\\
+\\
+Der Dynamic Time Warping Algorithmus ist nicht normalisiert oder auf einen bestimmten Wertebereich beschränkt. Ein Ergebnis, dass nah bei null liegt, weißt auf eine hohe Ähnlichkeit der Wahrscheinlichkeitsdichtefunktionen. Da es sich allerdings um kein Divergenzmaß handelt, muss das Ergebnis noch qualitativ bewertet werden. Der Algorithmus verwendet eine weitere Methode der Distanzberechnung. Dadurch ergibt sich eine hohe Parametrisierbarkeit. Es muss dementsprechend, vor der Implementierung, eine passende Methode bestimmt werden. \\Ebenso ist der Algorithmus robust gegenüber Messungenauigkeiten. Der Grund hierfür liegt, unter anderem, in der Translationsinvarianz dieser Methode. Zudem wird, bei der Berechnung, die statistische Geometrie der Dichtefunktionen miteinbezogen. Hierdurch ergibt sich eine hohe Qualität.
+\\
+\\
+Anhand der in \autoref{tab:haupt:eval} durchgeführten Bewertung und Gegenüberstellung der Evaluierungstechniken, ergeben sich drei äußerst relevante Methoden. Diese sind namentlich die Kullback-Leibler und Jensen-Shannon Divergence sowie die Hellinger Distance. Jeder dieser Evaluierungstechniken weißt, in Bezug auf die genannten Bewertungskriterien, ausschließlich positive Einstufungen auf. Bei einer solchen Gleichheit (Patt-Situation) ist es eine bewährte Methode, eine Endauswahl, auf Basis der Literaturnennungen, im (angrenzenden) Anwendungsfall, zu treffen. Dies trifft auf die Kullback-Leibler Divergenz zu. Aus diesem Grund wird die Kullback-Leibler Divergenz, als entsprechende Evaluierungstechnik, empfohlen.
+
+\FloatBarrier
+\subsection{Implementierung}
+\label{sec:haupt:valid}
+
+Die Evaluierung von generativen Algorithmen, unter Verwendung der Wahrscheinlichkeitsdichtefunktionen, erfolgt mit Hilfe der in \autoref{sec:haupt:bewert} empfohlenen Kullback-Leibler Divergenz. Hierzu wird die Evaluierungstechnik implementiert. Die Komplettumsetzung bzw. Pipeline der angrenzenden Doktorarbeit verwendet die Programmiersprache Python \cite{lit:Schick2021}. Aus diesem Grund wird diese ebenso für die Implementierung verwendet. Python umfasst hierbei eine Vielzahl an Package bzw. Bibliotheken, die im Kontext der Künstlichen Intelligenz und deren Teilgebiete, verwendet werden können \cite{lit:Raschka2019}\cite{lit:Foster2020}.
+Der Funktionsprototyp wird wie folgt definiert:
+
+\begin{itemize}
+	\item[] \textbf{[y1, y2, y3] = f(P,Q)}
+\end{itemize}
+
+Hierbei werden der Funktion zwei Parameter \textbf{P} und \textbf{Q} übergeben. Diese entsprechen den Wahrscheinlichkeitsdichtefunktionen. Der Rückgabewert \textbf{y1} stellt die Kullback-Leibler Divergenz dar. Neben dieser sind ebenso zwei weitere Kennzahlen für die eigentliche Validierung vorgesehen. Hierbei wird die Kullback-Leibler Divergenz iterativ berechnet. Die Größe \textbf{y2} beschreibt den maximalen Einzelwert der Kullback-Leibler Divergenz zwischen zwei Punkten der beiden Wahrscheinlichkeitsdichtefunktionen (maximale Diskrepanz). Dieser macht Aussagen über die höchste Diskrepanz von zwei Werten der entsprechenden Wahrscheinlichkeitsdichtefunktionen. Die Größe \textbf{y3} gibt den maximalen Gradienten der jeweiligen Einzelwerte an. Die zwei Rückgabewerte \textbf{y2} und \textbf{y3} dienen zur Validierung, inwieweit die beiden Wahrscheinlichkeitsdichtefunktionen in plausiblen Wertebereichen liegen.
+
+Die Implementierung erfolgt in \autoref{lst:haupt:kl}. Hierbei werden in einem ersten Schritt, mit Hilfe der \textit{where} Funktion des NumPy Packages, die Einzelwerte der Kullback-Leibler Divergenz bestimmt. Die Ermittlung der eigentlichen Kullback-Leibler Divergenz erfolgt mit Hilfe der \textit{sum} Funktion. Der maximale Gradient wird durch die Verkettung der \textit{max} und \textit{gradient} Funktionen bestimmt. Abschließend werden die drei genannten Kennzahlen zurückgegeben. 
+\newpage
+\begin{lstlisting}[language=Python, caption=Python Code: Kullback-Leibler Divergence, label=lst:haupt:kl]
+def kullback_leibler(p,q):
+	"""
+	
+	"""
+	# Einzelwerte der Kullback-Leibler Divergenz
+	kl_vals = np.where(q != 0, p * np.log(p / q), 0)
+	# Kullback-Leibler Divergenz
+	kl_div = np.sum(kl_vals)
+	# maximaler Einzelwert
+	max_val = np.max(kl_vals)
+	# maximaler Gradient
+	max_gradient = np.max(np.gradient(kl_vals))
+	return kl_div, max_val, max_gradient
+\end{lstlisting}
+\subsection{Datenanalyse}
+\label{sec:haupt:data}
+
+Im Folgenden wird die implementierte Kullback-Leibler Divergenz auf verschiedene synthetisch generierte Datensätze angewandt, mit dem Ziel, die Ergebnisse zu validieren. Hierbei werden zwei Fälle betrachtet. In einem ersten Schritt werden synthetisch generierte Sinusfunktionen, als sogenannte Baseline (Referenz), analysiert. Darauffolgend werden synthetisch generierte Überholvorgänge betrachtet. In beiden Fällen werden die spezifischen Variationsparameter nur geringfügig verändert. Dadurch fällt es leichter, eine qualitative Aussage über die generierten Daten zu machen, da diese leichter zu interpretieren sind. Die hierbei verwendeten Wahrscheinlichkeitsdichtefunktionen werden allesamt mittels der Histogramm-Spline-Approximation bestimmt.
+\\
+\\
+
+\subsubsection*{\textbf{Sinusfunktion}}
+
+In \autoref{img:data:sinFktK} sind 100 synthetisch generierte Sinusfunktionen als Zeitreihe dargestellt. Diese wurden mit Hilfe des Python Codes in \autoref{lst:a:sin} generiert. Es wurden hierbei 1000 Datenpunkte verwendet. Diese sind durch folgende Rechenvorschrift definiert:
+
+\begin{equation}
+	f(t) = a ~\cdotp sin(b ~\cdotp (t + c)) + d
+	\label{eqn:data:sinFkt}
+\end{equation}
+
+Die Variationsparameter $a, b, c$ und $d$ besitzen jeweils eine Abweichung von $ \pm 0,01$ mit einer Schrittweite von $0,001$. Durch diese Variation ergeben sich verschiedene Verläufe für die Funktionen. In \autoref{img:data:sinFktA} sind diese Varianzen, für einen Ausschnitt, genauer dargestellt.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\linewidth,height=0.6\linewidth]{fig/haupt/impl/SinusfunktionKomplett}
+	\caption{Sinusfunktionen}
+	\label{img:data:sinFktK}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\linewidth,height=0.6\linewidth]{fig/haupt/impl/SinusfunktionAusschnitt}
+	\caption{Ausschnitt der Sinusfunktionen}
+	\label{img:data:sinFktA}
+\end{figure}
+
+Die Wahrscheinlichkeitsdichtefunktionen der Sinusfunktionen sind, in \autoref{img:data:sinDichtK}, über der Auslenkung $y$, dargestellt. Die entsprechenden Dichtefunktionen wurden mittels der Histogramm-Spline-Approximation bestimmt (vgl. \autoref{sec:grundl:fkt}). Hierbei wurden sieben Bins für das zugrundeliegende Histogramm und ein Annäherungspolynom 5. Grades verwendet.
+\\
+\\
+In Bezug auf Sinusfunktionen sind hierbei drei Punkte von hoher Relevanz. Diese sind namentlich der Hochpunkt, Tiefpunkt sowie der Nulldurchgang. Für die Extrempunkte ergeben sich hierbei hohe Varianzen. Da die Steigung um diese Punkte gering ist, ändert sich die Auslenkung nur schwach. \\Folglich sind für diese Auslenkungen die meisten Datenpunkte vorhanden. Dies spiegelt sich ebenso in den Dichtefunktionen in \autoref{img:data:sinDichtK} wieder. Hierbei sind für die Auslenkungen $y = \pm 1,00$ die höchsten relativen Wahrscheinlichkeiten zu verzeichnen. Die Dichtefunktionen weisen hierbei ebenso hohe Varianzen auf.
+\\
+\\
+In den Nulldurchgängen besitzen die, in \autoref{img:data:sinFktK} dargestellten Sinusfunktionen, die höchste Steigung. Folglich ändert sich die Auslenkung, um diese Stellen, am schnellsten, über der Zeit. Hierbei ergeben sich, bei Variation der Parameter, hohe Varianzen. Diese sind ebenso in den Wahrscheinlichkeitsdichtefunktionen in \autoref{img:data:sinDichtK} bzw. \autoref{img:data:sinDichtA} zu verzeichnen. 
+\\
+\\
+Für die verschiedenen Dichtefunktionen sind einige Punkte mit einer höheren Konzentration zu beobachten. Dies wird vor allem in \autoref{img:data:sinDichtA}, für die Auslenkungen $y \approx \pm 2,5$, deutlich. Der Grund hierfür liegt in der Histogramm-Spline-Approximation selbst. Hierbei werden Splines durch die Klassenmitten des zugrundeliegenden Histogrammes gelegt. Dadurch ergeben sich ebenso Punkte mit höherer Konzentration bei den Klassenmitten.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\linewidth,height=0.6\linewidth]{fig/haupt/impl/SinusfunktionDichtefunktionKomplett}
+	\caption{Wahrscheinlichkeitsdichtefunktionen von Sinusfunktionen}
+	\label{img:data:sinDichtK}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\linewidth,height=0.6\linewidth]{fig/haupt/impl/SinusfunktionDichtefunktionAusschnitt}
+	\caption{Ausschnitt der Wahrscheinlichkeitsdichtefunktionen von Sinusfunktionen}
+	\label{img:data:sinDichtA}
+\end{figure}
+
+In \autoref{img:data:sinKLK} sind die Kullback-Leibler Distanzen für die Wahrscheinlichkeitsdichtefunktionen von 99 Sinusfunktionen dargestellt. Eine der 100 Dichtefunktionen wurde hierbei als Referenz-Dichtefunktion verwendet. Es ergeben sich ausschließlich Werte nahe null. Dies spricht für eine sehr hohe Ähnlichkeit der Kurven.
+\\
+\\
+Neben den eigentlichen aufsummierten Kullback-Leibler Divergenzen sind deren Einzelwerte relevant. Durch diese lassen sich die Verläufe der Wahrscheinlichkeitsdichtefunktionen validieren. In \autoref{img:data:sinKLA} sind die Einzelwerte für 99 Samples dargestellt. \\Es sind die verschiedenen Bereiche mit hoher Varianz zu erkennen, die mit den Varianzen aus \autoref{img:data:sinDichtK} übereinstimmen. Es sind ebenfalls die sieben Bins des zugrundeliegenden Histogramms zu erkennen, die für die Histogramm-Spline-Approximation verwendet werden. Die Grenzen dieser Histogramme liegen an den Stellen mit einer höheren Konzentration.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\linewidth,height=0.6\linewidth]{fig/haupt/impl/SinKLK}
+	\caption{Kullback-Leibler Distanzen für Dichtefunktionen der Sinusfunktionen}
+	\label{img:data:sinKLK}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\linewidth,height=0.6\linewidth]{fig/haupt/impl/SinKLEinzel}
+	\caption{Einzelwerte der Kullback-Leibler Distanzen für Dichtefunktionen der Sinusfunktionen}
+	\label{img:data:sinKLA}
+\end{figure}
+
+\FloatBarrier
+
+\subsubsection*{\textbf{Überholvorgang}}
+
+Nachfolgend werden synthetisch generierte Überholvorgänge, vergleichbar mit denen in \autoref{img:haupt:ueberhol}, analysiert. Die dazugehörigen Bewegungsdaten sind in \autoref{img:data:ueberFktK} als Zeitreihen, für die Längs- und Querrichtung, dargestellt. Diese wurden mit Hilfe des Python Codes in \autoref{lst:a:ueber} generiert. Es wurden hierbei 1602 Datenpunkte verwendet.
+\\
+\\
+Die entsprechenden Verläufe basieren auf den kinematischen bzw. physikalischen Beschreibungen in \cite{lit:Schick2020}. Hierbei besitzen die Variationsparameter $\gamma_1$ und $\gamma_2$ jeweils eine Abweichung von $ \pm 0,1$ mit einer Schrittweite von $0,001$. Durch diese Variation der Parameter ergeben sich unterschiedliche Bewegungsverläufe des überholenden Fahrzeugs.
+\\
+\\
+Es sind deutliche Varianzen in den Bewegungsverläufen für die Ein- und Ausschervorgänge zu erkennen. In \autoref{img:data:ueberFktA} sind diese beispielhaft für den Ausschervorgang dargestellt. Im Gegensatz dazu sind, während des Überholvorgangs auf der Gegenfahrbahn, die Variation der einzelnen Verläufe gering.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\linewidth,height=0.6\linewidth]{fig/haupt/impl/UeberholvorgangFunktionKomplett}
+	\caption{Bewegungsdaten von synthetisch generierten Überholvorgängen}
+	\label{img:data:ueberFktK}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\linewidth,height=0.6\linewidth]{fig/haupt/impl/UeberholvorgangFunktionAusschnitt}
+	\caption{Ausschnitt der Bewegungsdaten von synthetisch generierten Überholvorgängen}
+	\label{img:data:ueberFktA}
+\end{figure}
+
+In \autoref{img:data:ueberDichtK} sind die Wahrscheinlichkeitsdichtefunktionen über der Querrichtung dargestellt. Diese wurden ebenso mit Hilfe der Histogramm-Spline-Approximation bestimmt. Hierbei wurden 13 Bins für das zugrundeliegende Histogramm und ein Annäherungspolynom 11. Grades verwendet. Insgesamt werden die Variationen der einzelnen Wahrscheinlichkeitsdichtefunktionen deutlich. Diese ergeben sich durch die unterschiedlichen Bewegungsverläufe.
+\\
+\\
+Für eine Querrichtung nahe null befindet sich das Fahrzeug auf der ursprünglichen Fahrbahn. Hierbei ergeben sich relativ hohe Werte für die relative Wahrscheinlichkeit. Ebenso sind hohe Varianzen zu beobachten, die aus den unterschiedlichen Bewegungsverläufen resultieren. Für eine Querrichtung nahe drei befindet sich das Fahrzeug auf der Gegenfahrbahn. Hierbei sind, aufgrund der geringen Variation in den Bewegungsverläufen während des Überholvorgangs, die höchsten relativen Wahrscheinlichkeiten zu verzeichnen. Die Dauer des Ein- und Ausschervorgangs ist, relativ zum Überholvorgang, gering. Aus diesem Grund ergibt sich, für eine Auslenkung in Querrichtung von $0,5$ bis $2,5$ m, eine relative Wahrscheinlichkeit nahe null.
+\\
+\\
+In \autoref{img:data:ueberDichtA} ist ein Ausschnitt der Dichtefunktionen über der Querrichtung, zugehörig zur Überholspur des Überholvorgangs auf der Gegenfahrbahn, dargestellt. Die Variationen der einzelnen Bewegungsverläufe sind auf dieser gering. Dadurch sind die relativen Wahrscheinlichkeiten dort entsprechend größer. Die Variationen der einzelnen Wahrscheinlichkeitsdichtefunktionen werden hierbei wiederum verdeutlicht. Der Grund hierfür liegt in den unterschiedlichen Phasen der Ein- und Ausschervorgängen.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\linewidth,height=0.6\linewidth]{fig/haupt/impl/UeberholvorgangDichtefunktionKomplett}
+	\caption{Dichtefunktionen von synthetisch generierten Überholvorgängen}
+	\label{img:data:ueberDichtK}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\linewidth,height=0.6\linewidth]{fig/haupt/impl/UeberholvorgangDichtefunktionAusschnitt}
+	\caption{Ausschnitt der Dichtefunktionen von synthetisch generierten Überholvorgängen}
+	\label{img:data:ueberDichtA}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\linewidth,height=0.6\linewidth]{fig/haupt/impl/UeberholKLK}
+	\caption{Kullback-Leibler Distanzen für Dichtefunktionen der synthetisch generierten Überholvorgängen}
+	\label{img:data:ueberKLK}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\linewidth,height=0.6\linewidth]{fig/haupt/impl/UeberholKLEinzel}
+	\caption{Kullback-Leibler Distanzen für Dichtefunktionen der synthetisch generierten Überholvorgängen}
+	\label{img:data:ueberKLA}
+\end{figure}
+
+\FloatBarrier
+
+Für die Ermittlung der Kullback-Leibler Distanzen wurde, aus den 100 Wahrscheinlichkeitsdichtefunktionen der Überholvorgänge, eine als Referenz verwendet. In \autoref{img:data:ueberKLK} sind die Kullback-Leibler Distanzen für 99 Samples dargestellt. Es ergibt sich stets ein Wert nahe null. Diese Werte sprechen für eine hohe Ähnlichkeit der Dichtefunktionen.
+\\
+\\
+Die Einzelwerte der Kullback-Leibler Divergenzen sind in \autoref{img:data:ueberKLA} dargestellt. Die Verläufe
+zeigen eine hohe Varianz für den Ein- und Ausschervorgang sowie für den Überholvorgang. Für den Bereich zwischen den Fahrbahnen ergibt sich, wie in den entsprechenden Dichtefunktionen, ein annähernd linearer Verlauf. Es sind hierbei, wie im Falle der Sinusfunktionen, verschiedene Punkte mit einer höheren Konzentration zu beobachten. Diese resultieren ebenso aus der Histogramm-Spline-Approximation.
+\\
+\\
+Es ist zu beachten, dass die Werte hierbei um das zehnfache höher sind, als die Kullback-Leibler Distanzen der Dichtefunktionen von Sinusfunktionen. Dies lässt sich anhand der zugrundeliegenden mathematischen Beschreibung erklären. Die Definition einer Sinuskurve ist relativ simpel. Sie besitzt, in Abhängigkeit der Variationsparameter, stets einen ähnlichen periodischen Verlauf. Im Gegensatz dazu erfolgt die mathematische Beschreibung eines Überholvorgangs wesentlich komplexer \cite{lit:Schick2020}.

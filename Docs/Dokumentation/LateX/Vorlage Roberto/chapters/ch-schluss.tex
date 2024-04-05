@@ -1,0 +1,29 @@
+\chapter{Schluss}
+\label{sec:schluss}
+
+Im Folgenden wird eine Zusammenfassung der Bachelorarbeit sowie zukünftig aufbauende Arbeiten vorgestellt. 
+
+\section{Zusammenfassung}
+\label{sec:schluss:zsm}
+
+Jährlich sterben etwa 1,3 Millionen Menschen bei Verkehrsunfällen. Die häufigste Unfallursache ist hierbei menschliches Fehlverhalten. Aus diesem Grund besitzt das autonome Fahren das Potential, diese auf ein Minimum zu reduzieren. Hierbei werden alle Fahraufgaben vom Fahrzeug übernommen. Diese müssen, um die Sicherheit aller Verkehrsteilnehmer zu gewährleisten, jede Situation, im dynamischen Straßenverkehr, regelkonform bewältigen können. Ebenso müssen die dazugehörigen System- und Softwarekomponenten ausgiebig getestet werden. Hierzu sind eine große Menge an Daten für verschiedenste Fahrsituationen erforderlich, um autonome Fahrzeuge auf diese vorzubereiten. Für sicherheitskritische Fahrszenarien sind diese, aufgrund ihrer Kritikalität, relativ selten vorhanden. Hierbei können generative Algorithmen verwendet werden, um synthetische Bewegungsdaten für diese Szenarien zu generieren.
+\\
+\\
+Die generierten Datensätze müssen, um physikalisch plausible sicherheitskritische Fahrszenarien zu gewährleisten, anhand von Evaluierungstechniken, validiert werden. Hierbei wird typischerweise die Wahrscheinlichkeitsdichtefunktion des zugrundeliegenden Datensatzes betrachtet. Im Rahmen dieser Arbeit wurden Evaluierungstechniken für derartige Wahrscheinlichkeitsdichtefunktionen untersucht. Dazu wurde, auf Basis einer umfangreichen Literaturrecherche, eine Liste mit existierenden Evaluierungstechniken, erstellt. Hierbei wurden insgesamt ca. 200 Evaluierungstechniken herangezogen.
+\\
+\\
+In einem weiteren Schritt sind die, für den Anwendungsfall irrelevanten, Evaluierungstechniken ausgefiltert worden. Die daraus resultierende Liste enthielt 13 hoch relevante Evaluierungstechniken. Diese konnten, auf Basis ihrer mathematischen Beschreibung, in verschiedene Gruppen eingeteilt werden. Daraus entstand eine neuartige Taxonomie von Evaluierungstechniken für Wahrscheinlichkeitsdichtefunktionen.
+\\
+\\
+Die einzelnen Evaluierungstechniken wurden detailliert mathematisch beschrieben. In einem weiteren Schritt erfolgte, anhand von definierten Bewertungskriterien, für den zugrundeliegenden Anwendungsfall, eine Gegenüberstellung dieser Evaluierungstechniken. Hierbei konnte eine qualitative Empfehlung ausgesprochen werden. Abschließend wurde die empfohlene Evaluierungstechnik implementiert und anhand von synthetischen Datensätzen validiert.
+
+\section{Ausblick}
+\label{ec:schluss:ausblick}
+
+Die empfohlene Evaluierungstechnik wird in einer weiterführenden Arbeit verwendet. Hierbei wird die entsprechende Python-Implementierung in die Pipeline eines generativen Algorithmus eingebettet. Dieser generiert synthetische Bewegungsdaten von sicherheitskritische Fahrszenarien. Die Kullback-Leibler Divergenz kann hierbei verwendet werden, um diese Datensätze, gemäß der zugrundeliegenden Wahrscheinlichkeitsdichtefunktionen, zu validieren.
+\\
+\\
+In diesem Zusammenhang ist ebenso eine stärkere Prüfung von anderen, nicht direkt empfohlenen, Evaluierungstechniken denkbar. Speziell die Wasserstein-1 Metrik oder Maximum Mean Discrepancy besitzen eine hohe Qualität. Hierbei müssen allerdings die entsprechenden Parameter bestimmt werden. Dies ist mit einem weiteren Optimierungsprozess sowie einer vertieften Literaturrecherche verbunden.
+\\
+\\
+Im Rahmen dieser Arbeit wurden ausschließlich synthetische Daten analysiert. Diese weisen geringe Messungenauigkeiten auf und besitzen einen festen Wertebereich. Ebenso ist die Auswirkung von Realdaten sowie verschiedenen Wertebereichen auf die Evaluierungstechnik relevant. Schließlich soll diese reale sicherheitskritische Szenarien validieren können.
